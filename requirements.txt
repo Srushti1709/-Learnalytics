@@ -1,10 +1,10 @@
 Flask
-gunicorn
 pandas
+matplotlib
+seaborn
+reportlab
+joblib
 numpy
 scikit-learn
-matplotlib
 openpyxl
-joblib
-reportlab
-Pillow
+pillow
