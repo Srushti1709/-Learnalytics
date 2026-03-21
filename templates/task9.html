@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 style="color:#facc15">📊 Task 9 – Overfitting vs Underfitting Analysis</h2>
+
+<div class="tx9-main-container">
+
+<!-- ================= METRICS ================= -->
+
+<section class="tx9-metrics-section">
+
+<h2>📈 Model Performance Comparison</h2>
+
+<div class="tx9-metric-grid">
+
+<div class="tx9-metric-card">
+<h3>Training Error</h3>
+<h2>{{ train_error }}</h2>
+<p>Model error on training dataset</p>
+</div>
+
+<div class="tx9-metric-card">
+<h3>Testing Error</h3>
+<h2>{{ test_error }}</h2>
+<p>Model error on unseen test dataset</p>
+</div>
+
+<div class="tx9-metric-card">
+<h3>Model Complexity</h3>
+<h2>{{ complexity }}</h2>
+<p>Polynomial degree used</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= THEORY ================= -->
+
+<section class="tx9-theory-section">
+
+<h2>🧠 Understanding Overfitting and Underfitting</h2>
+
+<div class="tx9-theory-grid">
+
+<div class="tx9-theory-card">
+<h3>📉 Underfitting</h3>
+
+<p>
+Underfitting occurs when a machine learning model is too simple to capture the
+underlying patterns of the dataset. In this situation the model fails to
+learn the relationship between independent variables and the target variable.
+</p>
+
+<ul>
+<li>High Training Error</li>
+<li>High Testing Error</li>
+<li>Model too simple</li>
+<li>Important patterns not captured</li>
+</ul>
+
+</div>
+
+
+<div class="tx9-theory-card">
+<h3>📈 Overfitting</h3>
+
+<p>
+Overfitting happens when the model becomes too complex and starts memorizing
+the training dataset instead of learning general patterns. This causes the
+model to perform extremely well on training data but poorly on unseen data.
+</p>
+
+<ul>
+<li>Very Low Training Error</li>
+<li>High Testing Error</li>
+<li>Model memorizes noise</li>
+<li>Poor generalization</li>
+</ul>
+
+</div>
+
+
+<div class="tx9-theory-card">
+<h3>⚖️ Balanced Model</h3>
+
+<p>
+A well trained model balances bias and variance. It captures patterns from
+the dataset without memorizing noise and therefore performs well on both
+training and testing datasets.
+</p>
+
+<ul>
+<li>Low Training Error</li>
+<li>Low Testing Error</li>
+<li>Optimal complexity</li>
+<li>Good prediction accuracy</li>
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= GRAPHS ================= -->
+
+<section class="tx9-graphs-section">
+
+<h2>📊 Model Complexity and Performance</h2>
+
+<div class="tx9-graph-grid">
+
+<div class="tx9-graph-card">
+<h3>Training vs Testing Error</h3>
+<img src="/static/task9_error_curve.png">
+<p>This graph shows how training error decreases while testing error
+starts increasing when model complexity becomes too high.</p>
+</div>
+
+<div class="tx9-graph-card">
+<h3>Prediction Curve</h3>
+<img src="/static/task9_prediction_curve.png">
+<p>The prediction curve illustrates how the regression model fits
+the dataset.</p>
+</div>
+
+<div class="tx9-graph-card">
+<h3>Residual Error Distribution</h3>
+<img src="/static/task9_residuals.png">
+<p>Residual errors help evaluate how far predictions are from actual values.</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= COMPLEXITY EXPLANATION ================= -->
+
+<section class="tx9-complexity-section">
+
+<h2>⚙️ Effect of Model Complexity</h2>
+
+<div class="tx9-complexity-box">
+
+<p>
+Model complexity refers to how flexible the machine learning model is in
+capturing relationships in the data. Increasing complexity allows the model
+to fit training data more closely, but excessive complexity leads to
+overfitting.
+</p>
+
+<p>
+In this experiment we used polynomial regression with different degrees
+to demonstrate how training and testing errors behave with increasing
+model complexity.
+</p>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+
+<style>
+
+.tx9-main-container{
+margin-top:30px;
+}
+
+
+/* METRICS */
+
+.tx9-metric-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:25px;
+}
+
+.tx9-metric-card{
+background:#1c1c1c;
+padding:25px;
+border-radius:16px;
+text-align:center;
+box-shadow:0 0 10px rgba(0,0,0,0.5);
+min-height:130px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.tx9-metric-card h3{
+color:#facc15;
+margin-bottom:10px;
+}
+
+.tx9-metric-card h2{
+font-size:32px;
+word-break:break-word;
+overflow-wrap:anywhere;
+}
+
+
+
+/* THEORY */
+
+.tx9-theory-section{
+margin-top:70px;
+}
+
+.tx9-theory-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+margin-top:25px;
+}
+
+.tx9-theory-card{
+background:#1c1c1c;
+padding:25px;
+border-radius:19px;
+box-shadow:0 0 10px rgba(0,0,0,0.5);
+transition:0.3s;
+}
+
+.tx9-theory-card:hover{
+transform:translateY(-6px);
+box-shadow:0 10px 25px rgba(0,0,0,0.6);
+}
+
+.tx9-theory-card h3{
+color:#facc15;
+margin-bottom:12px;
+}
+
+.tx9-theory-card ul{
+margin-top:12px;
+padding-left:20px;
+}
+
+
+
+/* GRAPHS */
+
+.tx9-graphs-section{
+margin-top:70px;
+}
+
+.tx9-graph-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:30px;
+margin-top:30px;
+}
+
+.tx9-graph-card{
+background:#1c1c1c;
+padding:20px;
+border-radius:16px;
+text-align:center;
+box-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+.tx9-graph-card img{
+width:100%;
+border-radius:10px;
+margin-top:12px;
+}
+
+
+
+/* COMPLEXITY */
+
+.tx9-complexity-section{
+margin-top:70px;
+}
+
+.tx9-complexity-box{
+background:#1c1c1c;
+padding:30px;
+border-radius:16px;
+line-height:1.7;
+}
+
+</style>
+
+
+{% endblock %}

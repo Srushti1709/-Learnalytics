@@ -1,0 +1,134 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="compare-container">
+  <h1 class="compare-title">📊 Compare Performance Insights</h1>
+
+  <p class="compare-intro">
+    This section compares your academic behavior with patterns observed in the
+    student performance dataset. It highlights how your study habits,
+    attendance, and lifestyle compare with average successful students.
+  </p>
+
+  <!-- CARD SECTION -->
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h3>Your Study Hours</h3>
+      <p class="compare-value">{{ user.study }}</p>
+      <p class="compare-sub">Dataset Avg: {{ dataset.study }}</p>
+    </div>
+
+    <div class="compare-card">
+      <h3>Your Attendance</h3>
+      <p class="compare-value">{{ user.attendance }}%</p>
+      <p class="compare-sub">Dataset Avg: {{ dataset.attendance }}%</p>
+    </div>
+
+    <div class="compare-card">
+      <h3>Your Sleep</h3>
+      <p class="compare-value">{{ user.sleep }} hrs</p>
+      <p class="compare-sub">Dataset Avg: {{ dataset.sleep }} hrs</p>
+    </div>
+
+    <div class="compare-card">
+      <h3>Your Score</h3>
+      <p class="compare-value">{{ user.score }}</p>
+      <p class="compare-sub">Dataset Avg: {{ dataset.score }}</p>
+    </div>
+  </div>
+
+  <!-- CHART SECTION -->
+
+  <div class="compare-section">
+    <h2>📈 Performance Comparison</h2>
+
+    <canvas id="compareChart"></canvas>
+  </div>
+
+  <!-- INSIGHTS -->
+
+  <div class="compare-section">
+    <h2>🔍 Key Insights</h2>
+
+    <ul class="insight-list">
+      <li>
+        Students who study more than the dataset average tend to score higher.
+      </li>
+
+      <li>Attendance above 80% strongly correlates with good performance.</li>
+
+      <li>
+        Balanced sleep between 6–8 hours improves concentration and exam scores.
+      </li>
+
+      <li>Motivated students with consistent routines outperform others.</li>
+    </ul>
+  </div>
+
+  <!-- THEORY -->
+
+  <div class="compare-section">
+    <h2>📚 Analytical Interpretation</h2>
+
+    <p>
+      Comparative analysis helps identify gaps between an individual student's
+      study behavior and the overall trends found in the dataset. By examining
+      differences in study hours, attendance, and lifestyle factors, students
+      can understand how their habits influence academic performance.
+    </p>
+
+    <p>
+      The system uses descriptive analytics and visualization techniques to
+      highlight performance patterns and provide actionable insights.
+    </p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const userStudy = Number("{{ user.study }}");
+const userAttendance = Number("{{ user.attendance }}");
+const userSleep = Number("{{ user.sleep }}");
+const userScore = Number("{{ user.score }}");
+
+const dataStudy = Number("{{ dataset.study }}");
+const dataAttendance = Number("{{ dataset.attendance }}");
+const dataSleep = Number("{{ dataset.sleep }}");
+const dataScore = Number("{{ dataset.score }}");
+
+var ctx = document.getElementById("compareChart").getContext("2d");
+
+new Chart(ctx, {
+
+type: "bar",
+
+data: {
+
+labels: ["Study Hours","Attendance","Sleep","Score"],
+
+datasets: [
+
+{
+label: "Your Data",
+data: [userStudy,userAttendance,userSleep,userScore]
+},
+
+{
+label: "Dataset Average",
+data: [dataStudy,dataAttendance,dataSleep,dataScore]
+}
+
+]
+
+}
+
+});
+
+});
+
+</script>
+{% endblock %}

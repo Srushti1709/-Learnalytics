@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/dataset_tasks" class="nx-back-btn">⬅ Back to Tasks</a>
+
+<section class="nx-report-section">
+  <h2>📑 Automated EDA Report</h2>
+
+  <!-- Summary Cards -->
+  <div class="nx-summary-grid">
+    <div class="nx-summary-card">
+      <h3>{{ shape[0] }}</h3>
+      <p>Total Records</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h3>{{ shape[1] }}</h3>
+      <p>Total Columns</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h3>{{ total_missing }}</h3>
+      <p>Total Missing Values</p>
+    </div>
+  </div>
+
+  <!-- Column Names -->
+  <div class="nx-report-box">
+    <h3>🗂 Column Overview</h3>
+    <div class="nx-column-grid">
+      {% for col in columns %}
+      <div class="nx-column-box">{{ col }}</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Data Types -->
+  <div class="nx-report-box">
+    <h3>🔎 Data Types</h3>
+    <div class="nx-table-wrapper">{{ dtypes|safe }}</div>
+  </div>
+
+  <!-- Missing Values -->
+  <div class="nx-report-box">
+    <h3>⚠ Missing Values Per Column</h3>
+    <div class="nx-table-wrapper">
+      <table class="nx-table">
+        <tr>
+          <th>Column</th>
+          <th>Missing Count</th>
+        </tr>
+        {% for key, value in missing.items() %}
+        <tr>
+          <td>{{ key }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <!-- Statistical Summary -->
+  <div class="nx-report-box">
+    <h3>📊 Statistical Summary</h3>
+    <div class="nx-table-wrapper">{{ stats|safe }}</div>
+  </div>
+
+  <!-- Correlation Matrix -->
+  <div class="nx-report-box">
+    <h3>🔥 Correlation Matrix</h3>
+    <div class="nx-table-wrapper">{{ corr|safe }}</div>
+  </div>
+
+  <a href="{{ url_for('download_report') }}" class="nx-download-btn">
+    ⬇ Download Full PDF Report
+  </a>
+
+  <a href="{{ url_for('download_excel') }}" class="nx-download-btn">
+    ⬇ Download Excel Dataset
+  </a>
+</section>
+
+{% endblock %}

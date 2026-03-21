@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="nx-task-stage">
+  <div class="nx-bubble nx-b1" onclick="location.href = '/dataset_tasks'">
+    📊 <span>Our Dataset<br />Analysis</span>
+  </div>
+
+  <div class="nx-bubble nx-b2" onclick="location.href = '/enter_data'">
+    🧑‍💻 <span>Enter Your<br />Own Data</span>
+  </div>
+
+  <div class="nx-bubble nx-b3" onclick="location.href = '/compare_insights'">
+    📈 <span>Compare<br />Insights</span>
+  </div>
+
+  <div class="nx-bubble nx-b4" onclick="location.href = '/prediction_model'">
+    🤖 <span>Prediction<br />Model</span>
+  </div>
+</div>
+
+{% endblock %}

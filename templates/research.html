@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="rs-hero">
+
+<h1 class="rs-title">📊 Research & Insights</h1>
+
+<p class="rs-sub">
+This section presents research insights derived from the dataset used in this project.
+The analysis focuses on understanding how different factors influence student academic performance.
+</p>
+
+</section>
+
+
+<!-- Research Objective -->
+
+<section class="rs-section">
+
+<h2>🎯 Research Objective</h2>
+
+<div class="rs-grid">
+
+<div class="rs-card">
+<h3>📚 Study Behaviour</h3>
+<p>
+Understand how study hours impact exam performance and whether consistent study patterns improve academic outcomes.
+</p>
+</div>
+
+<div class="rs-card">
+<h3>🏫 Attendance Impact</h3>
+<p>
+Analyze how attendance percentage affects the overall score and identify whether regular class participation improves results.
+</p>
+</div>
+
+<div class="rs-card">
+<h3>🔥 Motivation Factor</h3>
+<p>
+Evaluate whether student motivation level influences exam scores and study patterns.
+</p>
+</div>
+
+<div class="rs-card">
+<h3>📈 Performance Prediction</h3>
+<p>
+Use machine learning models to predict academic performance based on study behaviour and historical scores.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- Research Methodology -->
+
+<section class="rs-section">
+
+<h2>🧠 Research Methodology</h2>
+
+<div class="rs-method">
+
+<div class="rs-step">
+<h3>1️⃣ Data Collection</h3>
+<p>
+The dataset contains multiple attributes including hours studied, attendance percentage,
+previous scores and motivation levels.
+</p>
+</div>
+
+<div class="rs-step">
+<h3>2️⃣ Data Preprocessing</h3>
+<p>
+Cleaning missing values, converting categorical variables and preparing the dataset
+for machine learning algorithms.
+</p>
+</div>
+
+<div class="rs-step">
+<h3>3️⃣ Model Building</h3>
+<p>
+Different regression and classification models were built to analyze and predict student performance.
+</p>
+</div>
+
+<div class="rs-step">
+<h3>4️⃣ Evaluation</h3>
+<p>
+Models were evaluated using performance metrics such as accuracy, MSE, MAE and R² score.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- Key Findings -->
+
+<section class="rs-section">
+
+<h2>📊 Key Research Findings</h2>
+
+<div class="rs-findings">
+
+<div class="rs-find-card">
+<h3>📈 Study Hours</h3>
+<p>
+Students studying more than 6 hours per day showed significantly better performance
+compared to those studying less than 3 hours.
+</p>
+</div>
+
+<div class="rs-find-card">
+<h3>🎯 Attendance</h3>
+<p>
+Attendance above 80% strongly correlates with higher exam scores and better academic consistency.
+</p>
+</div>
+
+<div class="rs-find-card">
+<h3>🔥 Motivation</h3>
+<p>
+Highly motivated students demonstrate stronger study habits and better exam performance.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- Future Research -->
+
+<section class="rs-section">
+
+<h2>🚀 Future Research Scope</h2>
+
+<div class="rs-future">
+
+<div class="rs-future-card">
+<h3>🤖 Advanced AI Models</h3>
+<p>
+Future work can explore deep learning models to improve prediction accuracy.
+</p>
+</div>
+
+<div class="rs-future-card">
+<h3>📊 Larger Dataset</h3>
+<p>
+Using larger and more diverse datasets can help produce more reliable predictions.
+</p>
+</div>
+
+<div class="rs-future-card">
+<h3>📱 Real-time Learning Analytics</h3>
+<p>
+Integration with online learning platforms could provide real-time student performance insights.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<style>
+
+.rs-hero{
+
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(135deg,#1e1b4b,#000);
+
+animation:rsFade 1.5s ease;
+
+}
+
+.rs-title{
+
+font-size:42px;
+color:#facc15;
+margin-bottom:20px;
+
+}
+
+.rs-sub{
+
+max-width:800px;
+margin:auto;
+color:#ddd;
+font-size:18px;
+
+}
+
+
+.rs-section{
+
+padding:70px 40px;
+
+}
+
+.rs-section h2{
+
+color:#facc15;
+margin-bottom:30px;
+text-align:center;
+
+}
+
+
+
+.rs-grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+
+}
+
+.rs-card{
+
+background:#111;
+padding:25px;
+border-radius:15px;
+border:1px solid #333;
+
+transition:0.4s;
+
+}
+
+.rs-card:hover{
+
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 10px 30px #7c3aed;
+
+}
+
+
+
+.rs-method{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+
+}
+
+.rs-step{
+
+background:#1c1c1c;
+padding:25px;
+border-radius:12px;
+border-left:5px solid #facc15;
+
+transition:0.3s;
+
+}
+
+.rs-step:hover{
+
+transform:scale(1.05);
+
+}
+
+
+
+.rs-findings{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+
+}
+
+.rs-find-card{
+
+background:#111;
+padding:25px;
+border-radius:15px;
+border:1px solid #333;
+
+transition:0.4s;
+
+}
+
+.rs-find-card:hover{
+
+box-shadow:0 0 20px #facc15;
+transform:translateY(-8px);
+
+}
+
+
+
+.rs-future{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+
+}
+
+.rs-future-card{
+
+background:#1c1c1c;
+padding:25px;
+border-radius:15px;
+
+transition:0.4s;
+
+}
+
+.rs-future-card:hover{
+
+transform:scale(1.05);
+box-shadow:0 0 25px #7c3aed;
+
+}
+
+
+
+@keyframes rsFade{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+
+{% endblock %}

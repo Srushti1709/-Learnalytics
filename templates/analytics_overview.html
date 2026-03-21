@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="an-hero">
+
+<h1>📊 Student Analytics Overview</h1>
+
+<p>High level insights derived from the student performance dataset.</p>
+
+</section>
+
+
+<section class="an-cards">
+
+<div class="an-card">
+<h2>{{total_students}}</h2>
+<p>Total Students</p>
+</div>
+
+<div class="an-card">
+<h2>{{avg_hours}}</h2>
+<p>Average Study Hours</p>
+</div>
+
+<div class="an-card">
+<h2>{{avg_attendance}}</h2>
+<p>Average Attendance</p>
+</div>
+
+<div class="an-card">
+<h2>{{avg_score}}</h2>
+<p>Average Score</p>
+</div>
+
+</section>
+
+
+<section class="charts-section">
+
+<h2>📈 Study Hours vs Exam Score</h2>
+<canvas id="chart1"></canvas>
+
+<h2>📊 Attendance vs Exam Score</h2>
+<canvas id="chart2"></canvas>
+
+<h2>📉 Study Hours Distribution</h2>
+<canvas id="chart3"></canvas>
+
+</section>
+
+
+<section class="analytics-theory">
+
+<h2>📚 Analytical Insights</h2>
+
+<div class="theory-grid">
+
+<div class="theory-card">
+
+<h3>Impact of Study Hours</h3>
+
+<p>
+Students who dedicate more time to studying generally achieve higher exam scores.
+Data analysis shows a strong positive relationship between study hours and performance.
+</p>
+
+</div>
+
+<div class="theory-card">
+
+<h3>Attendance Importance</h3>
+
+<p>
+Regular attendance helps students understand concepts more clearly.
+Students with higher attendance show significantly better academic outcomes.
+</p>
+
+</div>
+
+<div class="theory-card">
+
+<h3>Learning Patterns</h3>
+
+<p>
+The dataset reveals patterns where consistency in study routine leads
+to higher exam performance compared to irregular study habits.
+</p>
+
+</div>
+
+<div class="theory-card">
+
+<h3>Data Driven Education</h3>
+
+<p>
+Using analytics and machine learning, educational institutions can identify
+student weaknesses early and provide targeted academic support.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<style>
+
+.an-hero{
+text-align:center;
+padding:80px;
+background:linear-gradient(135deg,#1e1b4b,#020617);
+color:white;
+}
+
+.an-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+padding:60px;
+}
+
+.an-card{
+background:#111;
+border:1px solid #333;
+border-radius:15px;
+padding:30px;
+text-align:center;
+transition:.4s;
+}
+
+.an-card:hover{
+transform:translateY(-10px);
+box-shadow:0 10px 30px #7c3aed;
+}
+
+.an-card h2{
+color:#facc15;
+font-size:36px;
+}
+
+.charts-section{
+padding:60px;
+}
+
+canvas{
+background:#111;
+padding:20px;
+border-radius:15px;
+margin-bottom:60px;
+}
+
+.analytics-theory{
+padding:70px;
+background:#020617;
+color:white;
+}
+
+.theory-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.theory-card{
+background:#111;
+padding:25px;
+border-radius:15px;
+border:1px solid #333;
+transition:.4s;
+}
+
+.theory-card:hover{
+transform:translateY(-8px);
+box-shadow:0 10px 25px #facc15;
+}
+
+</style>
+
+
+<script>
+
+var hours = JSON.parse('{{hours | tojson}}')
+var scores = JSON.parse('{{scores | tojson}}')
+var attendance = JSON.parse('{{attendance | tojson}}')
+
+
+new Chart(document.getElementById("chart1"),{
+type:"scatter",
+data:{
+datasets:[{
+label:"Hours vs Score",
+data: hours.map((h,i)=>({x:h,y:scores[i]})),
+backgroundColor:"#7c3aed"
+}]
+}
+})
+
+
+new Chart(document.getElementById("chart2"),{
+type:"scatter",
+data:{
+datasets:[{
+label:"Attendance vs Score",
+data: attendance.map((a,i)=>({x:a,y:scores[i]})),
+backgroundColor:"#facc15"
+}]
+}
+})
+
+
+new Chart(document.getElementById("chart3"),{
+type:"bar",
+data:{
+labels:hours,
+datasets:[{
+label:"Study Hours",
+data:hours,
+backgroundColor:"#7c3aed"
+}]
+}
+})
+
+</script>
+
+{% endblock %}

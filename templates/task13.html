@@ -1,0 +1,233 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 class="t13-title">📊 Task 13 – Advanced Data Visualization</h2>
+
+<div class="t13-summary-grid">
+  <div class="t13-card">
+    <h3>Average Study Hours</h3>
+    <p>{{avg_hours}}</p>
+  </div>
+
+  <div class="t13-card">
+    <h3>Average Attendance</h3>
+    <p>{{avg_attendance}}%</p>
+  </div>
+
+  <div class="t13-card">
+    <h3>Average Score</h3>
+    <p>{{avg_score}}</p>
+  </div>
+</div>
+
+<div class="t13-chart-grid">
+  <div class="t13-chart-card">
+    <h3>Study Hours vs Exam Score</h3>
+    <canvas id="scatterChart"></canvas>
+  </div>
+
+  <div class="t13-chart-card">
+    <h3>Motivation Level Distribution</h3>
+    <canvas id="motivationChart"></canvas>
+  </div>
+
+  <div class="t13-chart-card">
+    <h3>Score Distribution</h3>
+    <canvas id="scoreChart"></canvas>
+  </div>
+
+  <div class="t13-chart-card">
+    <h3>Attendance Impact</h3>
+    <canvas id="attendanceChart"></canvas>
+  </div>
+</div>
+
+<section class="t13-theory">
+  <h2>📘 Advanced Data Visualization Concepts</h2>
+
+  <div class="t13-theory-grid">
+    <div class="t13-theory-card">
+      <h3>Scatter Plot Analysis</h3>
+      <p>
+        Scatter plots help visualize relationships between two numeric
+        variables. In student performance analysis, scatter plots show how study
+        hours affect exam scores and reveal performance trends.
+      </p>
+    </div>
+
+    <div class="t13-theory-card">
+      <h3>Distribution Visualization</h3>
+      <p>
+        Distribution charts display how values are spread across a dataset. They
+        help identify patterns such as score concentration or outliers in
+        student performance.
+      </p>
+    </div>
+
+    <div class="t13-theory-card">
+      <h3>Categorical Visualization</h3>
+      <p>
+        Pie charts and bar charts help analyze categorical features like
+        motivation level, parental involvement or school type. These
+        visualizations help understand student behaviour patterns.
+      </p>
+    </div>
+
+    <div class="t13-theory-card">
+      <h3>Insight Driven Analytics</h3>
+      <p>
+        Advanced visualization allows data scientists to extract insights from
+        complex datasets and communicate them effectively using interactive
+        dashboards.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .t13-title {
+    color: #facc15;
+    margin-top: 20px;
+  }
+
+  .t13-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .t13-card {
+    background: #1e1b4b;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #7c3aed;
+    transition: 0.4s;
+  }
+
+  .t13-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 10px 30px #7c3aed;
+  }
+
+  .t13-card h3 {
+    color: #facc15;
+  }
+
+  .t13-card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .t13-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .t13-chart-card {
+    background: #020617;
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid #7c3aed;
+  }
+
+  .t13-chart-card canvas {
+    height: 260px !important;
+  }
+
+  .t13-theory {
+    margin-top: 80px;
+  }
+
+  .t13-theory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .t13-theory-card {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #7c3aed;
+    transition: 0.4s;
+  }
+
+  .t13-theory-card:hover {
+    transform: translateY(-8px);
+    background: #1e1b4b;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+var hours = JSON.parse('{{ hours | safe }}');
+var scores = JSON.parse('{{ scores | safe }}');
+
+var motivationLabels = JSON.parse('{{ motivation_labels | safe }}');
+var motivationValues = JSON.parse('{{ motivation_values | safe }}');
+
+
+  // SCATTER PLOT
+
+  new Chart(document.getElementById("scatterChart"),{
+  type:"scatter",
+  data:{
+  datasets:[{
+  label:"Study Hours vs Score",
+  data: hours.map((h,i)=>({x:h,y:scores[i]}))
+  }]
+  }
+  })
+
+
+  // PIE CHART
+
+  new Chart(document.getElementById("motivationChart"),{
+  type:"pie",
+  data:{
+  labels:motivationLabels,
+  datasets:[{
+  data:motivationValues
+  }]
+  }
+  })
+
+
+  // SCORE DISTRIBUTION
+
+  new Chart(document.getElementById("scoreChart"),{
+  type:"line",
+  data:{
+  labels:scores.slice(0,20),
+  datasets:[{
+  label:"Score Trend",
+  data:scores.slice(0,20)
+  }]
+  }
+  })
+
+
+  // ATTENDANCE IMPACT
+
+  new Chart(document.getElementById("attendanceChart"),{
+  type:"bar",
+  data:{
+  labels:["Low","Medium","High"],
+  datasets:[{
+  label:"Attendance Impact",
+  data:[30,55,80]
+  }]
+  }
+  })
+</script>
+
+{% endblock %}

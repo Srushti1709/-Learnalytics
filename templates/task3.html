@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/dataset_tasks" class="nx-back-btn">⬅ Back to Tasks</a>
+
+<section class="nx-task3-section">
+  <h2>🧹 Missing Values & Outlier Analysis</h2>
+
+  <!-- Summary -->
+  <div class="nx-task3-summary">
+    <div class="nx-task3-card">
+      <h3>{{ total_missing }}</h3>
+      <p>Total Missing Values</p>
+    </div>
+  </div>
+
+  <!-- Missing Values Graph -->
+  <div class="nx-task3-chart">
+    <h3>📊 Missing Values Per Column</h3>
+    <img src="data:image/png;base64,{{ missing_img }}" />
+  </div>
+
+  <!-- Outlier Graph -->
+  <div class="nx-task3-chart">
+    <h3>📦 Outlier Detection</h3>
+    <img src="data:image/png;base64,{{ outlier_img }}" />
+  </div>
+
+  <!-- Insights -->
+  <div class="nx-task3-insight">
+    <h3>💡 Insights</h3>
+    <ul>
+      <li>Missing values indicate incomplete student records.</li>
+      <li>Outliers show extreme performance differences.</li>
+      <li>Data cleaning may improve model accuracy.</li>
+    </ul>
+  </div>
+</section>
+
+{% endblock %}

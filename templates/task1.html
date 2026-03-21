@@ -1,0 +1,100 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 style="color: #facc15">📊 Task 1 – Data Understanding</h2>
+
+<div class="info-box">
+  <h3>📊 Dataset Summary</h3>
+
+  <div class="nx-summary-grid">
+    <div class="nx-summary-card">
+      <h2>{{ total_rows }}</h2>
+      <p>Total Records</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>{{ total_cols }}</h2>
+      <p>Total Features</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>{{ numeric_cols }}</h2>
+      <p>Numeric Columns</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>{{ categorical_cols }}</h2>
+      <p>Categorical Columns</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>{{ missing_values }}</h2>
+      <p>Total Missing Values</p>
+    </div>
+  </div>
+  <section class="nx-dataset-section">
+    <h2>📊 Dataset Complete Overview</h2>
+
+    <div class="nx-dataset-intro">
+      <p>
+        This dataset contains student academic performance data including study
+        habits, attendance, motivation level and exam score.
+      </p>
+    </div>
+
+    <h3 style="margin-top: 70px">📌 All Column Names</h3>
+    <div class="nx-column-grid">
+      {% for col in columns %}
+      <div class="nx-column-box">{{ col }}</div>
+      {% endfor %}
+    </div>
+
+    <h3>⭐ Most Influential Columns</h3>
+    <div class="nx-highlight-grid">
+      <div class="nx-highlight-box">Hours_Studied</div>
+      <div class="nx-highlight-box">Attendance</div>
+      <div class="nx-highlight-box">Previous_Scores</div>
+      <div class="nx-highlight-box">Motivation_Level</div>
+    </div>
+
+    <h3>📈 Dataset Statistics</h3>
+
+    <div class="nx-stats-box">
+      <div class="nx-stats-scroll">{{ stats|safe }}</div>
+    </div>
+
+    <h3>🔍 First 5 Records</h3>
+    <div class="nx-table-scroll">{{ first5|safe }}</div>
+
+    <h3>🔎 Last 5 Records</h3>
+    <div class="nx-table-scroll">{{ last5|safe }}</div>
+  </section>
+  <!-- <div class="table-box">
+    <h4>First 5 Records</h4>
+    {{ first5|safe }}
+  </div> -->
+
+  <style>
+    .table-container {
+      overflow-x: auto;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .la-table-wrapper {
+      overflow-x: auto;
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+  </style>
+  {% endblock %}
+</div>

@@ -1,0 +1,227 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 class="t11-title">📊 Task 11 – Model Evaluation</h2>
+
+<div class="t11-metrics">
+  <div class="t11-card">
+    <h3>MSE</h3>
+    <p>{{ mse }}</p>
+  </div>
+
+  <div class="t11-card">
+    <h3>MAE</h3>
+    <p>{{ mae }}</p>
+  </div>
+
+  <div class="t11-card">
+    <h3>R² Score</h3>
+    <p>{{ r2 }}</p>
+  </div>
+
+  <div class="t11-card">
+    <h3>Accuracy</h3>
+    <p>{{ accuracy }}%</p>
+  </div>
+</div>
+
+<div class="t11-chart-grid">
+  <div class="t11-chart-card">
+    <h3>MSE Error</h3>
+    <canvas id="mseChart"></canvas>
+  </div>
+
+  <div class="t11-chart-card">
+    <h3>MAE Error</h3>
+    <canvas id="maeChart"></canvas>
+  </div>
+
+  <div class="t11-chart-card">
+    <h3>R² Score</h3>
+    <canvas id="r2Chart"></canvas>
+  </div>
+
+  <div class="t11-chart-card">
+    <h3>Accuracy</h3>
+    <canvas id="accChart"></canvas>
+  </div>
+</div>
+
+<section class="t11-theory">
+  <h2>📘 Model Evaluation Concepts</h2>
+
+  <div class="t11-theory-grid">
+    <div class="t11-theory-card">
+      <h3>Mean Squared Error</h3>
+      <p>
+        Mean Squared Error calculates the average squared difference between
+        actual values and predicted values. Lower values indicate better
+        prediction performance.
+      </p>
+    </div>
+
+    <div class="t11-theory-card">
+      <h3>Mean Absolute Error</h3>
+      <p>
+        Mean Absolute Error measures the average magnitude of prediction errors.
+        It tells how far predictions are from actual values.
+      </p>
+    </div>
+
+    <div class="t11-theory-card">
+      <h3>R² Score</h3>
+      <p>
+        R² score indicates how well the model explains variance in the dataset.
+        A score closer to 1 means the model fits the data very well.
+      </p>
+    </div>
+
+    <div class="t11-theory-card">
+      <h3>Classification Accuracy</h3>
+      <p>
+        Accuracy represents the percentage of correct predictions made by a
+        classification model.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .t11-title {
+    color: #facc15;
+    margin-top: 20px;
+  }
+
+  .t11-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .t11-card {
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .t11-card:hover {
+    transform: translateY(-6px);
+    background: transparent;
+    transform: scale(1);
+    box-shadow: 0 20px 40px rgba(147, 21, 250, 0.3);
+    border: 1px double #6d28d9;
+  }
+
+  .t11-card h3 {
+    color: #6d28d9;
+  }
+
+  .t11-card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .t11-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .t11-chart-card {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 18px;
+  }
+
+  .t11-chart-card canvas {
+    height: 260px !important;
+  }
+
+  .t11-theory {
+    margin-top: 80px;
+  }
+
+  .t11-theory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .t11-theory-card {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 16px;
+    transition: 0.3s;
+  }
+
+  .t11-theory-card:hover {
+    transform: translateY(-6px);
+    background: #463063;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  var mse = Number("{{ mse }}");
+  var mae = Number("{{ mae }}");
+  var r2 = Number("{{ r2 }}");
+  var accuracy = Number("{{ accuracy }}");
+
+  new Chart(document.getElementById("mseChart"), {
+    type: "bar",
+    data: {
+      labels: ["MSE"],
+      datasets: [
+        {
+          data: [mse],
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("maeChart"), {
+    type: "bar",
+    data: {
+      labels: ["MAE"],
+      datasets: [
+        {
+          data: [mae],
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("r2Chart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Score", "Remaining"],
+      datasets: [
+        {
+          data: [r2, 1 - r2],
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("accChart"), {
+    type: "pie",
+    data: {
+      labels: ["Correct", "Error"],
+      datasets: [
+        {
+          data: [accuracy, 100 - accuracy],
+        },
+      ],
+    },
+  });
+</script>
+
+{% endblock %}

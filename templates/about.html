@@ -1,0 +1,309 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  body {
+    background: linear-gradient(270deg, #000000, #1a0033, #000000);
+    background-size: 400% 400%;
+    animation: bgMove 15s infinite;
+    color: white;
+    font-family: "Segoe UI";
+  }
+
+  /* BACKGROUND ANIMATION */
+
+  @keyframes bgMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* HERO */
+
+  .hero {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .hero h1 {
+    font-size: 55px;
+    color: #ffd700;
+    animation: fadeDown 1.5s;
+  }
+
+  .hero p {
+    font-size: 20px;
+    max-width: 700px;
+    animation: fadeUp 1.5s;
+  }
+
+  /* SECTIONS */
+
+  .section {
+    padding: 80px 10%;
+    text-align: center;
+  }
+
+  .section h2 {
+    font-size: 36px;
+    color: #ffd700;
+    margin-bottom: 30px;
+  }
+
+  /* FEATURES GRID */
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 35px;
+    border-radius: 15px;
+    transition: 0.4s;
+  }
+
+  .card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 25px #ffd700;
+  }
+
+  /* TECH STACK */
+
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .tech span {
+    padding: 12px 30px;
+    border-radius: 30px;
+    background: #6a11cb;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  .tech span:hover {
+    background: #ffd700;
+    color: black;
+    transform: scale(1.1);
+  }
+
+  /* TEAM */
+
+  .team {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .profile {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 20px;
+    width: 260px;
+    transition: 0.4s;
+  }
+
+  .profile:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 30px #ffd700;
+  }
+
+  .profile img {
+    width: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+  }
+
+  /* SCROLL ANIMATION */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 1s;
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ANIMATIONS */
+
+  @keyframes fadeDown {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<!-- HERO -->
+
+<section class="hero">
+  <h1>About Our Project</h1>
+
+  <p>
+    Student Performance Predictor uses Machine Learning and Data Analytics to
+    analyze student study patterns and predict academic outcomes.
+  </p>
+</section>
+
+<!-- VISION -->
+
+<section class="section reveal">
+  <h2>Our Vision</h2>
+
+  <p style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.7">
+    Our vision is to bridge the gap between education and technology. This
+    system helps students understand their academic progress through intelligent
+    data analysis and predictive models.
+  </p>
+</section>
+
+<!-- FEATURES -->
+
+<section class="section reveal">
+  <h2>Key Features</h2>
+
+  <div class="features">
+    <div class="card">
+      <h3>Performance Prediction</h3>
+      <p>Predict student scores using ML algorithms.</p>
+    </div>
+
+    <div class="card">
+      <h3>Advanced Visualization</h3>
+      <p>Interactive charts for understanding student data.</p>
+    </div>
+
+    <div class="card">
+      <h3>Machine Learning Models</h3>
+      <p>ML models analyze educational data patterns.</p>
+    </div>
+
+    <div class="card">
+      <h3>Student Insights</h3>
+      <p>Identify study behavior that improves performance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+
+<section class="section reveal">
+  <h2>Technologies Used</h2>
+
+  <div class="tech">
+    <span>Python</span>
+    <span>Flask</span>
+    <span>Pandas</span>
+    <span>Machine Learning</span>
+    <span>HTML</span>
+    <span>CSS</span>
+    <span>JavaScript</span>
+    <span>Chart.js</span>
+  </div>
+</section>
+
+<!-- PROJECT TEAM -->
+
+<section class="section reveal">
+  <h2>Project Team</h2>
+
+  <div class="team">
+    <div class="profile">
+<img src="/img/srushti_profile_img.jfif">
+      <h3>Srushti Bhesaniya</h3>
+
+      <p>Developer & System Designer</p>
+    </div>
+
+    <div class="profile">
+<img src="/img/mansi_profile_img.jfif">
+      <h3>Mansi Kadiya</h3>
+
+      <p>Documentation & Testing</p>
+    </div>
+
+    <div class="profile">
+<img src="img/nitisha_profile_img.png">
+      <h3>Nitisha Lathiya</h3>
+
+      <p>Research & Data Analysis</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRA SECTION -->
+
+<section class="section reveal">
+  <h2>Why This Project Matters</h2>
+
+  <p style="max-width: 900px; margin: auto; font-size: 18px; line-height: 1.7">
+    Educational institutions generate huge amounts of data. Our system
+    transforms that data into meaningful insights. It helps students understand
+    how study hours, attendance, and motivation influence academic performance.
+  </p>
+</section>
+
+<!-- FUTURE SCOPE -->
+
+<section class="section reveal">
+  <h2>Future Scope</h2>
+
+  <p style="max-width: 900px; margin: auto; font-size: 18px; line-height: 1.7">
+    In the future, this system can be expanded with AI recommendation systems,
+    personalized study plans, and integration with learning management systems.
+  </p>
+</section>
+
+<script>
+  window.addEventListener("scroll", function () {
+    var reveals = document.querySelectorAll(".reveal");
+
+    for (var i = 0; i < reveals.length; i++) {
+      var windowHeight = window.innerHeight;
+      var elementTop = reveals[i].getBoundingClientRect().top;
+      var elementVisible = 150;
+
+      if (elementTop < windowHeight - elementVisible) {
+        reveals[i].classList.add("active");
+      }
+    }
+  });
+</script>
+
+{% endblock %}

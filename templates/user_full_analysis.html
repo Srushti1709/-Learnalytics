@@ -1,0 +1,318 @@
+{% extends "base.html" %} {% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="main-container">
+  <h1>📊 Student Performance Full Analysis (13 Tasks)</h1>
+
+  <!-- 1 -->
+  <div class="task-box">
+    <h2>1. Dataset Structure & Overview</h2>
+    <p>
+      Dataset structure gives information about total observations and
+      variables. It helps us understand how large the dataset is and how many
+      features are available.
+    </p>
+    <p><b>Rows:</b> {{shape[0]}} | <b>Columns:</b> {{shape[1]}}</p>
+  </div>
+
+  <div class="task-box">
+    <h2>2. Exploratory Data Analysis</h2>
+    <p>
+      EDA helps in understanding dataset patterns, structure, and relationships.
+    </p>
+
+    <div class="table-container">
+      <h4>First 5 Rows</h4>
+      {{head|safe}}
+    </div>
+
+    <div class="table-container">
+      <h4>Last 5 Rows</h4>
+      {{tail|safe}}
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="task-box">
+    <h2>3. Missing Values & Outliers</h2>
+    <p>
+      Missing values can reduce accuracy of analysis. Outliers are extreme
+      values that may distort results.
+    </p>
+    {{missing|safe}} {{outliers|safe}}
+  </div>
+
+  <!-- 4 -->
+  <div class="task-box">
+    <h2>4. Data Distribution</h2>
+    <p>
+      Distribution shows how values are spread across dataset. Helps identify
+      skewness and trends.
+    </p>
+    <canvas id="histChart"></canvas>
+  </div>
+
+  <div class="task-box">
+    <h2>5. Automated EDA Report</h2>
+
+    <p>
+      Automated EDA provides statistical summary including mean, standard
+      deviation, minimum and maximum values. It helps in quick understanding of
+      dataset distribution.
+    </p>
+
+    <div class="table-container">{{stats|safe}}</div>
+
+    <br />
+    <a href="/download/csv"><button>⬇ Download CSV</button></a>
+    <a href="/download/pdf"><button>⬇ Download PDF</button></a>
+  </div>
+
+  <!-- 6 -->
+  <div class="task-box">
+    <h2>6. Regression Analysis</h2>
+    <p>
+      Regression predicts continuous values such as marks. Graph shows actual vs
+      predicted values.
+    </p>
+    <canvas id="regChart"></canvas>
+  </div>
+
+  <!-- 7 -->
+  <div class="task-box">
+    <h2>7. Supervised Learning</h2>
+    <p>Supervised learning maps input features to output.</p>
+    <canvas id="supChart"></canvas>
+  </div>
+
+  <!-- 8 -->
+  <div class="task-box">
+    <h2>8. Model Comparison</h2>
+    <p>Comparing multiple models helps choose best performing one.</p>
+    <canvas id="compChart"></canvas>
+  </div>
+
+  <!-- 9 -->
+  <div class="task-box">
+    <h2>9. Overfitting & Underfitting</h2>
+    <p>Overfitting: model memorizes data. Underfitting: model too simple.</p>
+    <canvas id="fitChart"></canvas>
+  </div>
+
+  <!-- 10 -->
+  <div class="task-box">
+    <h2>10. Classification</h2>
+    <p>Converts numeric output into categories (e.g., Pass/Fail).</p>
+    <p><b>Accuracy:</b> {{acc}}</p>
+    <canvas id="classChart"></canvas>
+  </div>
+
+  <div class="task-box">
+    <h2>11. Model Evaluation</h2>
+
+    <p>
+      Model Evaluation measures how well the model performs on unseen data. It
+      helps in understanding prediction accuracy and error.
+    </p>
+
+    <p>
+      Mean Absolute Error (MAE) shows the average difference between actual and
+      predicted values.
+    </p>
+
+    <p><b>MAE:</b> {{mae}}</p>
+
+    <canvas id="errorChart"></canvas>
+  </div>
+
+  <!-- 12 -->
+  <div class="task-box">
+    <h2>12. Performance Metrics</h2>
+    <p>R² score measures how well model fits data.</p>
+    <p><b>R²:</b> {{r2}}</p>
+    <canvas id="metricsChart"></canvas>
+  </div>
+
+  <div class="task-box">
+    <h2>13. Advanced Data Visualization</h2>
+
+    <p>
+      Advanced Data Visualization helps in understanding complex relationships
+      between multiple variables. It uses graphical techniques to reveal hidden
+      patterns, trends, and correlations in the dataset.
+    </p>
+
+    <p>
+      The correlation heatmap below shows how strongly different features are
+      related to each other. Values closer to 1 or -1 indicate strong
+      relationships, while values near 0 indicate weak relationships.
+    </p>
+
+    <canvas id="heatChart"></canvas>
+  </div>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a001a, #1a0033);
+      font-family: Arial, sans-serif;
+    }
+
+    .main-container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d8b4fe;
+      margin-bottom: 30px;
+    }
+
+    .task-box {
+      margin: 25px 0;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #9333ea;
+      background: rgba(20, 0, 40, 0.8);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+      color: white;
+      transition: 0.3s;
+    }
+
+    .task-box:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+    }
+
+    .task-box h2 {
+      color: #c084fc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #9333ea;
+      padding: 8px;
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 320px;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: #9333ea;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #7e22ce;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+  </style>
+
+  <script id="data-script" type="application/json">
+    {
+    "hist_data": {{ hist_data|tojson }},
+    "actual": {{ actual|tojson }},
+    "predicted": {{ predicted|tojson }},
+    "sup_x": {{ sup_x|tojson }},
+    "sup_y": {{ sup_y|tojson }},
+    "comp_labels": {{ comp_labels|tojson }},
+    "comp_scores": {{ comp_scores|tojson }},
+    "fit_labels": {{ fit_labels|tojson }},
+    "fit_scores": {{ fit_scores|tojson }},
+    "class_labels": {{ class_labels|tojson }},
+    "class_values": {{ class_values|tojson }},
+    "error_values": {{ error_values|tojson }},
+    "metrics_labels": {{ metrics_labels|tojson }},
+    "metrics_values": {{ metrics_values|tojson }},
+    "heat_labels": {{ heat_labels|tojson }},
+    "heat_data": {{ heat_data|tojson }}
+    }
+  </script>
+
+  <script>
+    const d = JSON.parse(document.getElementById("data-script").textContent);
+
+    // charts
+    new Chart(histChart, {
+      type: "bar",
+      data: { labels: d.hist_data, datasets: [{ data: d.hist_data }] },
+    });
+    new Chart(regChart, {
+      type: "scatter",
+      data: {
+        datasets: [
+          { data: d.actual.map((v, i) => ({ x: v, y: d.predicted[i] })) },
+        ],
+      },
+    });
+    new Chart(supChart, {
+      type: "scatter",
+      data: {
+        datasets: [{ data: d.sup_x.map((v, i) => ({ x: v, y: d.sup_y[i] })) }],
+      },
+    });
+    new Chart(compChart, {
+      type: "bar",
+      data: { labels: d.comp_labels, datasets: [{ data: d.comp_scores }] },
+    });
+    new Chart(fitChart, {
+      type: "bar",
+      data: { labels: d.fit_labels, datasets: [{ data: d.fit_scores }] },
+    });
+    new Chart(classChart, {
+      type: "bar",
+      data: { labels: d.class_labels, datasets: [{ data: d.class_values }] },
+    });
+    new Chart(errorChart, {
+      type: "line",
+      data: {
+        labels: d.actual,
+        datasets: [
+          {
+            label: "Error",
+            data: d.error_values,
+          },
+        ],
+      },
+    });
+    new Chart(metricsChart, {
+      type: "bar",
+      data: {
+        labels: d.metrics_labels,
+        datasets: [{ data: d.metrics_values }],
+      },
+    });
+    new Chart(heatChart, {
+      type: "bar",
+      data: { labels: d.heat_labels, datasets: [{ data: d.heat_data[0] }] },
+    });
+  </script>
+</div>
+
+<div style="text-align: center; margin-top: 30px">
+  <a href="enter_data.html">
+    <button>⬅ Back to Home</button>
+  </a>
+</div>
+{% endblock %}

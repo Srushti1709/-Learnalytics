@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="nx-report-section">
+
+<h2>🛠 Admin Control Panel</h2>
+
+<div class="nx-report-box">
+    <h3>📊 Current Dataset Info</h3>
+    <p><strong>Total Records:</strong> {{ shape[0] }}</p>
+    <p><strong>Total Columns:</strong> {{ shape[1] }}</p>
+</div>
+
+<div class="nx-report-box">
+    <h3>📂 Column Overview</h3>
+    <ul>
+        {% for col in columns %}
+        <li>{{ col }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="nx-report-box">
+    <h3>⬆ Upload New Dataset</h3>
+    <form action="{{ url_for('upload_dataset') }}" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br><br>
+        <button type="submit" class="nx-download-btn">Upload & Replace Dataset</button>
+    </form>
+</div>
+
+<div class="nx-report-box">
+    <h3>🗑 Reset Prediction History</h3>
+    <a href="{{ url_for('reset_history') }}" class="nx-download-btn">
+        Clear History
+    </a>
+</div>
+
+<div class="nx-report-box">
+    <h3>📌 Admin Controls</h3>
+    <p>
+        From here you can manage dataset, retrain models automatically (Task 6),
+        and control prediction records.
+    </p>
+</div>
+
+</section>
+
+{% endblock %}

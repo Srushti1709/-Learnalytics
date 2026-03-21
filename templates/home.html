@@ -1,0 +1,193 @@
+{% extends "base.html" %} {% block content %}
+
+<div id="particles-js"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Academic Data Intelligence</h1>
+    <p>
+      Discover how attendance, study hours, sleep patterns, and stress levels
+      truly influence academic performance using real statistical modeling.
+    </p>
+    <a href="{{ url_for('analytics_overview') }}" class="btn btn-primary">
+      Start Real Analysis
+    </a>
+  </div>
+
+  <div class="hero-chart">
+    <canvas id="heroChart"></canvas>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section dark reveal">
+  <div class="container">
+    <h2>Why Students Fail to Understand Performance Factors?</h2>
+    <p>
+      Most students believe marks depend only on study hours. However, research
+      shows attendance, sleep cycles, stress levels, and previous academic
+      record significantly impact final outcomes.
+    </p>
+  </div>
+</section>
+
+<!-- HOW SYSTEM WORKS -->
+<section class="section light reveal">
+  <div class="container">
+    <h2>How Learnalytics Works</h2>
+
+    <div class="steps">
+      <div class="step">
+        <h3>1️⃣ Data Collection</h3>
+        <p>Students enter academic and lifestyle factors.</p>
+      </div>
+
+      <div class="step">
+        <h3>2️⃣ Statistical Processing</h3>
+        <p>Correlation & regression models analyze relationships.</p>
+      </div>
+
+      <div class="step">
+        <h3>3️⃣ Factor Impact Detection</h3>
+        <p>System identifies strongest performance influencers.</p>
+      </div>
+
+      <div class="step">
+        <h3>4️⃣ Final Prediction</h3>
+        <p>AI model predicts expected academic score.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE ANALYSIS -->
+<section class="section dark reveal">
+  <div class="container">
+    <h2>Live Factor Impact Preview</h2>
+    <canvas id="analysisChart"></canvas>
+  </div>
+</section>
+
+<!-- SAFE DATA PASS -->
+<script id="chart-data" type="application/json">
+  {
+    "hours": {{ hours | tojson }},
+    "scores": {{ scores | tojson }},
+    "attendance": {{ attendance | tojson }}
+  }
+</script>
+
+<script src="{{ url_for('static', filename='home.js') }}"></script>
+
+<!-- STATS SECTION -->
+<section class="section light reveal">
+  <div class="container">
+    <h2 style="text-align: center">Platform Impact Overview</h2>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <h3 class="counter" data-target="{{ analysis_modules }}">0</h3>
+        <p>Analysis Modules</p>
+      </div>
+
+      <div class="stat">
+        <h3 class="counter" data-target="{{ prediction_accuracy }}">0</h3>
+        <p>Prediction Accuracy %</p>
+      </div>
+
+      <div class="stat">
+        <h3 class="counter" data-target="{{ students_modeled }}">0</h3>
+        <p>Students Modeled</p>
+      </div>
+
+      <div class="stat">
+        <h3 class="counter" data-target="{{ core_factors }}">0</h3>
+        <p>Core Factors</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MINI PREDICTION -->
+<section id="prediction-form" class="section dark reveal">
+  <div class="container">
+    <h2 style="text-align: center">Quick Performance Estimator</h2>
+
+    <form action="{{ url_for('predict') }}" method="POST" class="mini-form">
+      <input
+        type="number"
+        step="any"
+        name="study"
+        placeholder="Study Hours"
+        required
+      />
+      <input
+        type="number"
+        step="any"
+        name="attendance"
+        placeholder="Attendance %"
+        required
+      />
+      <input
+        type="number"
+        step="any"
+        name="sleep"
+        placeholder="Sleep Hours"
+        required
+      />
+      <input
+        type="number"
+        step="any"
+        name="stress"
+        placeholder="Stress Level (1-10)"
+        required
+      />
+
+      <button type="submit" class="btn-primary">Estimate</button>
+    </form>
+  </div>
+</section>
+
+<!-- RESEARCH MODEL -->
+<section class="section dark reveal">
+  <div class="container center">
+    <h2>Research-Based Predictive Model</h2>
+    <p>
+      Learnalytics uses statistical regression and correlation techniques to
+      model academic performance. The system is designed based on real-world
+      academic datasets and structured analytical methods.
+    </p>
+  </div>
+</section>
+
+<!-- 13 TASKS -->
+<section class="section light reveal">
+  <div class="container">
+    <h2>13 Core Academic Analysis Tasks</h2>
+
+    <div class="task-grid">
+      <div class="task">Attendance Analysis</div>
+      <div class="task">Study Hours Correlation</div>
+      <div class="task">Sleep Pattern Impact</div>
+      <div class="task">Stress Level Effect</div>
+      <div class="task">Previous Marks Influence</div>
+      <div class="task">Subject-wise Strength</div>
+      <div class="task">Internal vs External Marks</div>
+      <div class="task">Trend Prediction</div>
+      <div class="task">Regression Modeling</div>
+      <div class="task">Performance Classification</div>
+      <div class="task">Improvement Suggestion</div>
+      <div class="task">Risk Detection</div>
+      <div class="task">Final Score Prediction</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section light center reveal">
+  <h2>Ready to Analyze Your Academic Growth?</h2>
+  <a href="/analytics_overview" class="btn-primary">Try Real Prediction</a>
+</section>
+
+{% endblock %}

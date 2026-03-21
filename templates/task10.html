@@ -1,0 +1,225 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 style="color: #facc15">📊 Task 10 – Classification Model</h2>
+
+<section class="nx-task10-section">
+  <!-- Overview -->
+
+  <div class="nx-task10-card">
+    <h3>📘 Classification Problem</h3>
+
+    <p>
+      Original dataset me Exam Score numeric value tha. Classification task me
+      ise categories me convert kiya gaya.
+    </p>
+
+    <ul>
+      <li>Score ≥ 70 → Good Performance</li>
+      <li>Score < 70 → Low Performance</li>
+    </ul>
+
+    <p>
+      Isse machine learning model predict kar sakta hai ki student good
+      performance karega ya low.
+    </p>
+  </div>
+
+  <!-- Stats -->
+
+  <div class="nx-task10-grid">
+    <div class="nx-task10-stat">
+      <h2>{{ accuracy }}%</h2>
+      <p>Model Accuracy</p>
+    </div>
+
+    <div class="nx-task10-stat">
+      <h2>{{ pass_students }}</h2>
+      <p>Good Students</p>
+    </div>
+
+    <div class="nx-task10-stat">
+      <h2>{{ fail_students }}</h2>
+      <p>Low Students</p>
+    </div>
+  </div>
+
+  <!-- Graph 1 -->
+
+  <div class="nx-task10-card">
+    <h3>📊 Performance Distribution</h3>
+
+    <div class="t10-chart-box">
+      <canvas id="task10Pie"></canvas>
+    </div>
+  </div>
+
+  <!-- Graph 2 -->
+
+  <div class="nx-task10-card">
+    <h3>📈 Average Study Behaviour</h3>
+
+    <div class="t10-chart-box">
+      <canvas id="task10Bar"></canvas>
+    </div>
+  </div>
+
+  <!-- Graph 3 -->
+
+  <div class="nx-task10-card">
+    <h3>🎯 Model Accuracy</h3>
+
+    <div class="t10-chart-box">
+      <canvas id="task10Accuracy"></canvas>
+    </div>
+  </div>
+
+  <!-- Explanation -->
+
+  <div class="nx-task10-card">
+    <h3>📚 Model Explanation</h3>
+
+    <p>
+      Classification supervised learning ka ek important concept hai. Isme model
+      labelled dataset se learn karta hai aur categorical output predict karta
+      hai.
+    </p>
+
+    <p>
+      Is project me Logistic Regression model use kiya gaya hai. Ye binary
+      classification problems ke liye efficient algorithm hai.
+    </p>
+
+    <p>
+      Model accuracy evaluate karti hai ki predictions kitni correct hai. High
+      accuracy indicate karta hai ki model dataset ke patterns achhe se learn
+      kar raha hai.
+    </p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div
+  id="task10-data"
+  data-pass="{{ pass_students }}"
+  data-fail="{{ fail_students }}"
+  data-accuracy="{{ accuracy }}"
+  data-hours="{{ avg_hours }}"
+  data-attendance="{{ avg_attendance }}"
+></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const dataBox = document.getElementById("task10-data");
+
+  const passCount = Number(dataBox.dataset.pass);
+  const failCount = Number(dataBox.dataset.fail);
+  const accuracyVal = Number(dataBox.dataset.accuracy);
+  const avgHours = Number(dataBox.dataset.hours);
+  const avgAttendance = Number(dataBox.dataset.attendance);
+
+  const errorVal = 100 - accuracyVal;
+
+  // PIE
+  new Chart(document.getElementById("task10Pie"), {
+    type: "pie",
+    data: {
+      labels: ["Good Performance", "Low Performance"],
+      datasets: [
+        {
+          data: [passCount, failCount],
+          backgroundColor: ["#22c55e", "#ef4444"],
+        },
+      ],
+    },
+  });
+
+  // BAR
+  new Chart(document.getElementById("task10Bar"), {
+    type: "bar",
+    data: {
+      labels: ["Avg Study Hours", "Avg Attendance"],
+      datasets: [
+        {
+          label: "Average Values",
+          data: [avgHours, avgAttendance],
+          backgroundColor: ["#3b82f6", "#facc15"],
+        },
+      ],
+    },
+  });
+
+  // ACCURACY
+  new Chart(document.getElementById("task10Accuracy"), {
+    type: "doughnut",
+    data: {
+      labels: ["Accuracy", "Error"],
+      datasets: [
+        {
+          data: [accuracyVal, errorVal],
+          backgroundColor: ["#10b981", "#374151"],
+        },
+      ],
+    },
+  });
+</script>
+
+<style>
+  .nx-task10-section {
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .nx-task10-card {
+    background: #1c1c1c;
+    padding: 25px;
+    margin-top: 30px;
+    border-radius: 16px;
+    transition: 0.4s;
+  }
+
+  .nx-task10-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+
+  .nx-task10-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .nx-task10-stat {
+    background: #111;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .nx-task10-stat:hover {
+    transform: scale(1.05);
+  }
+
+  .nx-task10-stat h2 {
+    color: #facc15;
+    font-size: 34px;
+  }
+
+  .t10-chart-box {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+  }
+
+  .t10-chart-box canvas {
+    width: 100% !important;
+    height: 500px !important;
+  }
+</style>
+
+{% endblock %}

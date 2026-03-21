@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analysis-container">
+
+  <h1 class="title">📊 Enter Your Own Dataset</h1>
+
+  <p class="subtitle">
+    Analyze student performance using ML by entering data manually or uploading dataset.
+  </p>
+
+  <!-- OPTION BUTTONS -->
+  <div class="option-buttons">
+    <button onclick="showForm()" class="btn-option">📝 Enter Data</button>
+    <button onclick="showUpload()" class="btn-option">📂 Upload CSV</button>
+  </div>
+
+  <!-- FORM INPUT (HIDDEN INITIALLY) -->
+  <div id="dataForm" class="input-box" style="display:none;">
+    <form action="/analyze_form_data" method="POST" onsubmit="setTimeout(() => this.reset(), 100);">
+
+      <div class="grid">
+
+        <input type="number" name="Hours_Studied" placeholder="Hours Studied" required>
+        <input type="number" name="Attendance" placeholder="Attendance %" required>
+        <input type="number" name="Sleep_Hours" placeholder="Sleep Hours" required>
+        <input type="number" name="Previous_Scores" placeholder="Previous Scores" required>
+        <input type="number" name="Tutoring_Sessions" placeholder="Tutoring Sessions" required>
+        <input type="number" name="Physical_Activity" placeholder="Physical Activity" required>
+
+        <select name="Parental_Involvement" required>
+          <option value="">Parental Involvement</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+
+        <select name="Motivation_Level" required>
+          <option value="">Motivation Level</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+
+        <select name="Internet_Access" required>
+          <option value="">Internet Access</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+
+        <select name="Gender" required>
+          <option value="">Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+      </div>
+
+      <button class="analyze-btn">🚀 Analyze</button>
+    </form>
+  </div>
+
+  <!-- CSV UPLOAD (HIDDEN INITIALLY) -->
+  <div id="uploadBox" class="input-box" style="display:none;">
+    <form action="/upload_dataset_user" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" required>
+      <button class="analyze-btn">📂 Upload & Analyze</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+function showForm() {
+  document.getElementById("dataForm").style.display = "block";
+  document.getElementById("uploadBox").style.display = "none";
+}
+
+function showUpload() {
+  document.getElementById("dataForm").style.display = "none";
+  document.getElementById("uploadBox").style.display = "block";
+}
+</script>
+
+<!-- THEORY SECTION (BACK ADDED ✅) -->
+<div class="theory">
+  <h2>📘 About This Module</h2>
+
+  <p>
+    This feature allows users to analyze student academic performance using machine learning techniques.
+    Users can either manually input student data or upload a dataset for analysis.
+  </p>
+
+  <p>
+    The system processes input data and applies predictive models to estimate student performance based on factors such as study hours, attendance, sleep, and motivation.
+  </p>
+
+  <p>
+    This helps in identifying key patterns and making data-driven academic decisions.
+  </p>
+</div>
+
+{% endblock %}

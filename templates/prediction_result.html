@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="analysis-container">
+  <h1 class="title">🎯 Prediction Result</h1>
+
+  <div class="result-card">
+    <h2>Estimated Score</h2>
+    <p class="score">{{ prediction }}</p>
+  </div>
+
+  <a href="/enter_data" class="btn-option">🔄 Try Another</a>
+</div>
+
+<style>
+  .result-card {
+    text-align: center;
+    padding: 40px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    box-shadow: 0 0 30px #38bdf8;
+    animation: glow 2s infinite alternate;
+  }
+
+  .score {
+    font-size: 60px;
+    color: #22c55e;
+    font-weight: bold;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px #d4e284;
+    }
+    to {
+      box-shadow: 0 0 40px #5b38f8;
+    }
+  }
+</style>
+
+{% endblock %}

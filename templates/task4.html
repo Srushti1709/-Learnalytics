@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/dataset_tasks" class="nx-back-btn">⬅ Back to Tasks</a>
+
+<section class="nx-task4-section">
+  <h2>📊 Data Distribution & Shape Analysis</h2>
+
+  <div class="nx-task4-intro">
+    <p>
+      This section explores distribution patterns, spread, skewness and shape
+      characteristics of numerical features.
+    </p>
+  </div>
+
+  <!-- Individual Distributions -->
+  <h3>📈 Feature Distributions</h3>
+
+  {% for col, img in charts %}
+  <div class="nx-task4-chart">
+    <h4>{{ col }}</h4>
+    <img src="data:image/png;base64,{{ img }}" />
+  </div>
+  {% endfor %}
+
+  <!-- Boxplot -->
+  <div class="nx-task4-chart">
+    <h3>📦 Spread Comparison</h3>
+    <img src="data:image/png;base64,{{ boxplot_img }}" />
+  </div>
+
+  <!-- Skewness -->
+  <h3>📉 Skewness</h3>
+  <div class="nx-metric-grid">
+    {% for key, value in skewness.items() %}
+    <div class="nx-metric-card">
+      <h4>{{ key }}</h4>
+      <p>{{ value }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Kurtosis -->
+  <h3>📈 Kurtosis</h3>
+  <div class="nx-metric-grid">
+    {% for key, value in kurtosis.items() %}
+    <div class="nx-metric-card">
+      <h4>{{ key }}</h4>
+      <p>{{ value }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

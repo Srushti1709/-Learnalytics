@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block content %}
+
+<section class="an-section">
+  <h1>🧠 Smart Insights</h1>
+
+  <p>Data-driven insights derived from student performance dataset.</p>
+</section>
+
+<section class="insights-grid">
+  <div class="insight-card">
+    <h3>📚 Study Insight</h3>
+
+    <p>
+      Students studying more than 6 hours per day tend to achieve significantly
+      higher exam scores.
+    </p>
+  </div>
+
+  <div class="insight-card">
+    <h3>🎯 Attendance Insight</h3>
+
+    <p>
+      Students with attendance above 80% show consistent academic performance.
+    </p>
+  </div>
+
+  <div class="insight-card">
+    <h3>⚡ Performance Pattern</h3>
+
+    <p>
+      Motivated students maintain both high study hours and regular attendance.
+    </p>
+  </div>
+
+  <div class="insight-card">
+    <h3>🤖 Machine Learning Insight</h3>
+
+    <p>
+      Predictive models such as regression and classification help identify
+      student success patterns early.
+    </p>
+  </div>
+</section>
+
+<section class="theory">
+  <h2>📚 Analytical Explanation</h2>
+
+  <p>
+    Smart insights are derived using statistical analysis and machine learning
+    techniques. By studying patterns in the dataset, we can identify the most
+    influential factors affecting student academic success. Key variables such
+    as study hours, attendance, motivation level and previous scores provide
+    meaningful information for predicting academic outcomes. These insights help
+    educational institutions make data-driven decisions to improve learning
+    strategies and student support systems.
+  </p>
+</section>
+
+<style>
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 60px;
+  }
+
+  .insight-card {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #333;
+    transition: 0.4s;
+  }
+
+  .insight-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px #facc15;
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 style="color:#facc15">🤖 Task 8 – Multiple Model Comparison</h2>
+
+<div class="tm8-container">
+
+
+<!-- ================= INTRO ================= -->
+
+<section class="tm8-intro">
+
+<div class="tm8-intro-card">
+
+<h3>📊 Why Model Comparison is Important?</h3>
+
+<p>
+In machine learning different algorithms behave differently depending
+on the structure of the dataset. Some algorithms may perform better
+for classification tasks while others may work better for regression
+or complex patterns.
+</p>
+
+<p>
+In this task we compare multiple machine learning models to evaluate
+their performance on student academic performance data.
+The objective is to identify which model provides the most accurate
+predictions.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= THEORY CARDS ================= -->
+
+<section class="tm8-theory">
+
+<h3 class="tm8-section-title">🧠 Models Used in This Analysis</h3>
+
+<div class="tm8-theory-grid">
+
+<div class="tm8-theory-card">
+
+<h4>🌳 Decision Tree</h4>
+
+<p>
+Decision Tree is a supervised learning algorithm that splits the dataset
+into multiple branches based on feature conditions. It creates a tree-like
+structure where each node represents a decision rule.
+</p>
+
+<ul>
+<li>Easy to understand and visualize</li>
+<li>Works well with structured data</li>
+<li>Can suffer from overfitting</li>
+</ul>
+
+</div>
+
+
+<div class="tm8-theory-card">
+
+<h4>🌲 Random Forest</h4>
+
+<p>
+Random Forest is an ensemble learning method that combines multiple
+decision trees to produce more accurate and stable predictions.
+Each tree is trained on a random subset of data.
+</p>
+
+<ul>
+<li>High prediction accuracy</li>
+<li>Reduces overfitting</li>
+<li>Handles large datasets effectively</li>
+</ul>
+
+</div>
+
+
+<div class="tm8-theory-card">
+
+<h4>📈 Logistic Regression</h4>
+
+<p>
+Logistic Regression is a classification algorithm used to predict
+binary outcomes. It calculates probability using the logistic function
+and classifies results into categories.
+</p>
+
+<ul>
+<li>Fast and efficient</li>
+<li>Good baseline model</li>
+<li>Works well with linear relationships</li>
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= METRICS TABLE ================= -->
+
+<section class="tm8-metrics">
+
+<h3 class="tm8-section-title">📈 Model Performance Comparison</h3>
+
+<div class="tm8-table-wrapper">
+
+<table class="tm8-table">
+
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1 Score</th>
+</tr>
+
+{% for model,metrics in results.items() %}
+
+<tr>
+<td>{{model}}</td>
+<td>{{metrics.Accuracy}}</td>
+<td>{{metrics.Precision}}</td>
+<td>{{metrics.Recall}}</td>
+<td>{{metrics["F1 Score"]}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= GRAPH SECTION ================= -->
+
+<section class="tm8-graphs">
+
+<h3 class="tm8-section-title">📊 Model Accuracy Visualization</h3>
+
+<div class="tm8-graph-card">
+
+<img src="/static/task8_model_accuracy.png">
+
+<p>
+The bar chart above shows how different machine learning models perform
+on the dataset. Higher accuracy indicates better prediction performance.
+</p>
+
+</div>
+
+
+<h3 class="tm8-section-title">📉 Confusion Matrix</h3>
+
+<div class="tm8-graph-card">
+
+<img src="/static/task8_confusion.png">
+
+<p>
+Confusion matrix helps evaluate the classification performance
+by comparing predicted values with actual values.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= INSIGHTS ================= -->
+
+<section class="tm8-insights">
+
+<h3 class="tm8-section-title">🔎 Key Insights</h3>
+
+<div class="tm8-insight-grid">
+
+<div class="tm8-insight-card">
+<h4>✔ Ensemble Advantage</h4>
+<p>
+Random Forest often produces better performance because it combines
+multiple decision trees and reduces overfitting.
+</p>
+</div>
+
+<div class="tm8-insight-card">
+<h4>✔ Model Stability</h4>
+<p>
+Logistic Regression provides stable predictions when the relationship
+between variables is approximately linear.
+</p>
+</div>
+
+<div class="tm8-insight-card">
+<h4>✔ Decision Tree Flexibility</h4>
+<p>
+Decision Trees are highly interpretable but may overfit when
+the tree becomes too deep.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= CONCLUSION ================= -->
+
+<section class="tm8-conclusion">
+
+<h3 class="tm8-section-title">📚 Conclusion</h3>
+
+<div class="tm8-conclusion-box">
+
+<p>
+The comparison of multiple machine learning models provides valuable
+insights into how different algorithms perform on the same dataset.
+Random Forest generally achieves better accuracy due to ensemble
+learning, while Logistic Regression remains an efficient baseline model.
+</p>
+
+<p>
+Model comparison helps data scientists select the most suitable
+algorithm for prediction tasks and improves the reliability
+of machine learning systems.
+</p>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+
+<style>
+
+.tm8-container{
+margin-top:30px;
+}
+
+
+/* SECTION TITLE */
+
+.tm8-section-title{
+color:#facc15;
+margin-top:60px;
+margin-bottom:25px;
+}
+
+
+
+/* INTRO */
+
+.tm8-intro-card{
+background:#1c1c1c;
+padding:30px;
+border-radius:16px;
+line-height:1.7;
+box-shadow:0 0 15px rgba(0,0,0,0.6);
+}
+
+
+
+/* THEORY GRID */
+
+.tm8-theory-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
+
+.tm8-theory-card{
+background:#1c1c1c;
+padding:25px;
+border-radius:18px;
+transition:0.4s;
+box-shadow:0 0 12px rgba(0,0,0,0.5);
+}
+
+.tm8-theory-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,0.7);
+}
+
+
+
+/* TABLE */
+
+.tm8-table-wrapper{
+overflow-x:auto;
+}
+
+.tm8-table{
+width:100%;
+border-collapse:collapse;
+background:#1c1c1c;
+border-radius:12px;
+overflow:hidden;
+}
+
+.tm8-table th{
+background:#facc15;
+color:black;
+padding:14px;
+}
+
+.tm8-table td{
+padding:14px;
+text-align:center;
+border-bottom:1px solid #333;
+}
+
+.tm8-table tr:hover{
+background:#2a2a2a;
+}
+
+
+
+/* GRAPH */
+
+.tm8-graph-card{
+background:#1c1c1c;
+padding:30px;
+border-radius:16px;
+text-align:center;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+margin-bottom:40px;
+}
+
+.tm8-graph-card img{
+max-width:750px;
+width:100%;
+border-radius:12px;
+}
+
+
+
+/* INSIGHTS */
+
+.tm8-insight-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+.tm8-insight-card{
+background:#1c1c1c;
+padding:22px;
+border-radius:14px;
+transition:0.3s;
+}
+
+.tm8-insight-card:hover{
+transform:scale(1.05);
+}
+
+
+
+/* CONCLUSION */
+
+.tm8-conclusion-box{
+background:#1c1c1c;
+padding:30px;
+border-radius:16px;
+line-height:1.7;
+}
+
+</style>
+
+{% endblock %}

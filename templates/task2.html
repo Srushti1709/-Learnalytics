@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/dataset_tasks" class="nx-back-btn">⬅ Back to Tasks</a>
+
+<section class="nx-eda-section">
+
+<h2>📊 Exploratory Data Analysis</h2>
+
+<!-- Summary Cards -->
+<div class="nx-eda-summary">
+
+    <div class="nx-eda-card">
+        <h3>{{ avg_score }}</h3>
+        <p>Average Score</p>
+    </div>
+
+    <div class="nx-eda-card">
+        <h3>{{ max_score }}</h3>
+        <p>Highest Score</p>
+    </div>
+
+    <div class="nx-eda-card">
+        <h3>{{ min_score }}</h3>
+        <p>Lowest Score</p>
+    </div>
+
+</div>
+
+<!-- Distribution -->
+<div class="nx-chart-box">
+    <h3>📈 Score Distribution Analysis</h3>
+    <img src="data:image/png;base64,{{ dist_img }}">
+</div>
+
+<!-- Heatmap -->
+<div class="nx-chart-box">
+    <h3>🔥 Correlation Heatmap</h3>
+    <img src="data:image/png;base64,{{ heatmap_img }}">
+</div>
+
+<!-- Insight Section -->
+<div class="nx-eda-insight">
+    <h3>💡 Insights</h3>
+    <ul>
+        <li>Higher study hours directly improve exam performance.</li>
+        <li>Attendance shows strong positive relationship with score.</li>
+        <li>Previous performance indicates academic consistency.</li>
+    </ul>
+</div>
+
+</section>
+
+{% endblock %}

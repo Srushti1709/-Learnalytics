@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analysis-container">
+  <h1>📊 Uploaded Dataset Analysis</h1>
+
+  <div class="summary-box">
+    <p><b>Total Records:</b> {{ shape[0] }}</p>
+    <p><b>Total Columns:</b> {{ shape[1] }}</p>
+  </div>
+
+  <h2>🗂 Columns</h2>
+  <ul>
+    {% for col in columns %}
+      <li>{{ col }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="/enter_data" class="btn-option">⬅ Back</a>
+</div>
+
+{% endblock %}

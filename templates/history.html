@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="text-center mb-4">Your Performance History 📜</h2>
+
+{% if records %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Study</th>
+            <th>Attendance</th>
+            <th>Sleep</th>
+            <th>Internet</th>
+            <th>Marks</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in records %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4 class="mt-5 text-center">Performance Trend 📈</h4>
+
+{% if graph_path %}
+<div class="text-center">
+    <img src="/{{ graph_path }}" class="img-fluid">
+</div>
+{% endif %}
+
+{% else %}
+<p class="text-center">No records found. Add data first.</p>
+{% endif %}
+
+<a href="/dashboard" class="btn btn-primary mt-4">Back to Dashboard</a>
+
+{% endblock %}

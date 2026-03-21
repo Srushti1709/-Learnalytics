@@ -1,0 +1,221 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 class="t12-title">📊 Task 12 – Performance Metrics</h2>
+
+<div class="t12-metric-grid">
+  <div class="t12-card">
+    <h3>Accuracy</h3>
+    <p>{{accuracy}}%</p>
+  </div>
+
+  <div class="t12-card">
+    <h3>Precision</h3>
+    <p>{{precision}}%</p>
+  </div>
+
+  <div class="t12-card">
+    <h3>Recall</h3>
+    <p>{{recall}}%</p>
+  </div>
+
+  <div class="t12-card">
+    <h3>F1 Score</h3>
+    <p>{{f1}}%</p>
+  </div>
+</div>
+
+<div class="t12-chart-grid">
+  <div class="t12-chart-card">
+    <h3>Model Accuracy</h3>
+    <canvas id="accuracyChart"></canvas>
+  </div>
+
+  <div class="t12-chart-card">
+    <h3>Performance Comparison</h3>
+    <canvas id="metricChart"></canvas>
+  </div>
+
+  <div class="t12-chart-card">
+    <h3>Confusion Matrix</h3>
+    <canvas id="confusionChart"></canvas>
+  </div>
+</div>
+
+<section class="t12-theory">
+  <h2>📘 Understanding Performance Metrics</h2>
+
+  <div class="t12-theory-grid">
+    <div class="t12-theory-card">
+      <h3>Accuracy</h3>
+      <p>
+        Accuracy represents the percentage of correct predictions made by the
+        model. Higher accuracy means the model predicts the correct output most
+        of the time.
+      </p>
+    </div>
+
+    <div class="t12-theory-card">
+      <h3>Precision</h3>
+      <p>
+        Precision measures how many predicted positive cases were actually
+        correct. It helps evaluate false positive errors.
+      </p>
+    </div>
+
+    <div class="t12-theory-card">
+      <h3>Recall</h3>
+      <p>
+        Recall indicates how well the model identifies actual positive cases. It
+        measures the ability to capture relevant instances.
+      </p>
+    </div>
+
+    <div class="t12-theory-card">
+      <h3>F1 Score</h3>
+      <p>
+        F1 score is the harmonic mean of precision and recall. It balances both
+        metrics to evaluate the overall performance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .t12-title {
+    color: #facc15;
+    margin-top: 20px;
+  }
+
+  .t12-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .t12-card {
+    background: #1e1b4b;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    transition: 0.4s;
+    border: 1px solid #7c3aed;
+  }
+
+  .t12-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 10px 30px #7c3aed;
+  }
+
+  .t12-card h3 {
+    color: #facc15;
+  }
+
+  .t12-card p {
+    font-size: 28px;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .t12-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .t12-chart-card {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 18px;
+  }
+
+  .t12-chart-card canvas {
+    height: 260px !important;
+  }
+
+  .t12-theory {
+    margin-top: 80px;
+  }
+
+  .t12-theory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .t12-theory-card {
+    background: #020617;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #7c3aed;
+    transition: 0.4s;
+  }
+
+  .t12-theory-card:hover {
+    transform: translateY(-8px);
+    background: #1e1b4b;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  var accuracy = Number("{{accuracy}}");
+  var precision = Number("{{precision}}");
+  var recall = Number("{{recall}}");
+  var f1 = Number("{{f1}}");
+
+  var tp = Number("{{tp}}");
+  var fp = Number("{{fp}}");
+  var fn = Number("{{fn}}");
+  var tn = Number("{{tn}}");
+
+  new Chart(document.getElementById("accuracyChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Correct", "Error"],
+      datasets: [
+        {
+          data: [accuracy, 100 - accuracy],
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("metricChart"), {
+    type: "bar",
+    data: {
+      labels: ["Precision", "Recall", "F1"],
+      datasets: [
+        {
+          label: "Model Metrics",
+          data: [precision, recall, f1],
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("confusionChart"), {
+    type: "bar",
+    data: {
+      labels: [
+        "True Positive",
+        "False Positive",
+        "False Negative",
+        "True Negative",
+      ],
+      datasets: [
+        {
+          label: "Confusion Matrix",
+          data: [tp, fp, fn, tn],
+        },
+      ],
+    },
+  });
+</script>
+
+{% endblock %}

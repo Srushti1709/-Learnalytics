@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/dataset_tasks" class="nx-back-btn">⬅ Back to Tasks</a>
+
+<section class="nx-report-section">
+
+<h2>🤖 Complete Machine Learning Dashboard</h2>
+
+<!-- INTRO SECTION -->
+<div class="nx-report-box">
+    <h3>📘 Model Overview</h3>
+    <p>
+        This section evaluates two regression models: Linear Regression and Random Forest.
+        The dataset was split into training and testing sets, and performance metrics were calculated
+        to determine the best-performing model.
+    </p>
+</div>
+
+<!-- MODEL COMPARISON GRAPH -->
+<div class="nx-report-box">
+    <h3>📊 Model Performance Comparison</h3>
+    <img src="{{ url_for('static', filename=comparison_graph) }}" width="100%">
+    <p style="margin-top:15px;">
+        🏆 Best Performing Model:
+        <strong style="color:#facc15;">{{ best_model }}</strong>
+    </p>
+</div>
+
+<!-- METRICS SECTION -->
+<div class="nx-report-box">
+    <h3>📘 Linear Regression Metrics</h3>
+    <ul>
+        <li><strong>R² Score (Coefficient of Determination):</strong> {{ lr.R2 }}</li>
+        <li><strong>MAE (Mean Absolute Error):</strong> {{ lr.MAE }}</li>
+        <li><strong>MSE (Mean Squared Error):</strong> {{ lr.MSE }}</li>
+        <li><strong>RMSE (Root Mean Squared Error):</strong> {{ lr.RMSE }}</li>
+    </ul>
+</div>
+
+<div class="nx-report-box">
+    <h3>🌲 Random Forest Metrics</h3>
+    <ul>
+        <li><strong>R² Score (Coefficient of Determination):</strong> {{ rf.R2 }}</li>
+        <li><strong>MAE (Mean Absolute Error):</strong> {{ rf.MAE }}</li>
+        <li><strong>MSE (Mean Squared Error):</strong> {{ rf.MSE }}</li>
+        <li><strong>RMSE (Root Mean Squared Error):</strong> {{ rf.RMSE }}</li>
+    </ul>
+</div>
+
+<!-- FEATURE IMPORTANCE -->
+<div class="nx-report-box">
+    <h3>🔥 Feature Importance (Random Forest)</h3>
+    <img src="{{ url_for('static', filename=feature_graph) }}" width="100%">
+</div>
+
+<!-- PREDICTION FORM -->
+<div class="nx-report-box">
+    <h3>🎯 Predict Score</h3>
+    <form action="{{ url_for('ml_predict') }}" method="POST" class="nx-form-grid">
+        {% for feature in features %}
+        <div class="nx-input-group">
+            <label>{{ feature }}</label>
+            <input type="number" step="any" name="{{ feature }}" required>
+        </div>
+        {% endfor %}
+        <button type="submit" class="nx-download-btn">Predict</button>
+    </form>
+</div>
+
+<a href="/prediction_history" class="nx-download-btn">
+    📜 View Prediction History
+</a>
+
+</section>
+
+{% endblock %}

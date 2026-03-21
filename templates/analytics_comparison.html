@@ -1,0 +1,154 @@
+{% extends "base.html" %} {% block content %}
+
+<section class="an-section">
+  <h1>⚖ Performance Comparison</h1>
+
+  <p>Comparing how different features influence student academic outcomes.</p>
+</section>
+
+<section class="charts-grid">
+  <div class="chart-box">
+    <h3>Hours vs Score</h3>
+    <canvas id="cmp1"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Attendance vs Score</h3>
+    <canvas id="cmp2"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Hours vs Attendance</h3>
+    <canvas id="cmp3"></canvas>
+  </div>
+</section>
+
+<section class="theory">
+  <h2>📚 Comparison Insights</h2>
+
+  <div class="theory-grid">
+    <div class="theory-card">
+      <h3>Study Hours vs Scores</h3>
+
+      <p>
+        A strong correlation exists between the number of hours studied and the
+        exam scores achieved by students.
+      </p>
+    </div>
+
+    <div class="theory-card">
+      <h3>Attendance Impact</h3>
+
+      <p>
+        Students with higher attendance generally achieve better academic
+        results compared to students with irregular attendance.
+      </p>
+    </div>
+
+    <div class="theory-card">
+      <h3>Balanced Academic Strategy</h3>
+
+      <p>
+        The best performing students maintain both high study hours and strong
+        attendance simultaneously.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  .an-section {
+    text-align: center;
+    padding: 80px;
+    background: linear-gradient(135deg, #1e1b4b, #020617);
+    color: white;
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    padding: 60px;
+  }
+
+  .chart-box {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    transition: 0.4s;
+  }
+
+  .chart-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px #7c3aed;
+  }
+
+  .theory {
+    padding: 70px;
+    background: #020617;
+    color: white;
+  }
+
+  .theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .theory-card {
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #333;
+  }
+</style>
+
+
+<script>
+  var hours = JSON.parse("{{hours | tojson}}");
+  var scores = JSON.parse("{{scores | tojson}}");
+  var attendance = JSON.parse("{{attendance | tojson}}");
+
+  new Chart(document.getElementById("cmp1"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: "Hours vs Score",
+          data: hours.map((h, i) => ({ x: h, y: scores[i] })),
+          backgroundColor: "#7c3aed",
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("cmp2"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: "Attendance vs Score",
+          data: attendance.map((a, i) => ({ x: a, y: scores[i] })),
+          backgroundColor: "#facc15",
+        },
+      ],
+    },
+  });
+
+  new Chart(document.getElementById("cmp3"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: "Hours vs Attendance",
+          data: hours.map((h, i) => ({ x: h, y: attendance[i] })),
+          backgroundColor: "#7c3aed",
+        },
+      ],
+    },
+  });
+</script>
+
+{% endblock %}

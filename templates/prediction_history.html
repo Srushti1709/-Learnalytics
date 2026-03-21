@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/task6" class="nx-back-btn">⬅ Back to Model</a>
+
+<section class="nx-report-section">
+
+<h2>📜 Prediction History</h2>
+
+<div class="nx-report-box">
+    {{ table|safe }}
+</div>
+
+</section>
+
+{% endblock %}

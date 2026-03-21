@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Learnalytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+
+    <style>
+      .history-container {
+        display: grid;
+        gap: 20px;
+      }
+
+      .history-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #ffffff;
+        color: #ffd60a;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
+
+      .history-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .score-box {
+        font-size: 24px;
+        font-weight: bold;
+        color: #4e73df;
+      }
+
+      .result-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .result-content {
+        background: white;
+        color: #4e73df;
+        padding: 40px;
+        border-radius: 20px;
+        width: 400px;
+        animation: slideUp 0.3s ease;
+      }
+
+      .close-btn {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .result-content {
+          width: 90%;
+        }
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #020617;
+        border-radius: 10px;
+        min-width: 180px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        padding: 6px 0;
+        z-index: 999;
+        margin-top: 5px;
+      }
+
+      /* show only on hover */
+
+      .navbar li:hover > .dropdown-menu {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <!-- <nav class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home') }}" style="text-decoration:none;color:#FFD60A;">
+            💜 Learnalytics
+        </a>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+
+        <li class="dropdown">
+          <a href="#">Analysis ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Attendance Analysis</a></li>
+            <li><a href="#">Study Correlation</a></li>
+            <li><a href="#">Stress Impact</a></li>
+            <li><a href="#">Final Prediction</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Tasks</a></li>
+        <li><a href="#">Research</a></li>
+        
+        {% if session.get("user_id") %}
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+        
+        <li><a href="#">About</a></li>
+        <li><a href="#">Login</a></li>
+      </ul>
+    </nav> -->
+    <nav class="navbar">
+      <div class="logo">
+        <a
+          href="{{ url_for('home') }}"
+          style="text-decoration: none; color: #ffd60a"
+        >
+          💜 Learnalytics
+        </a>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+
+        {% if session.get("user_id") %}
+        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+
+        <!-- <li class="dropdown">
+          <a href="#">Analysis ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Attendance Analysis</a></li>
+            <li><a href="#">Study Correlation</a></li>
+            <li><a href="#">Stress Impact</a></li>
+            <li><a href="#">Final Prediction</a></li>
+          </ul>
+        </li> -->
+
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            Analytics
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="/analytics_overview">
+                📊 Overview
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="/analytics_trend">
+                📈 Performance Trend
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="/analytics_comparison">
+                🔍 Comparison
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="/analytics_insights">
+                💡 Smart Insights
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks">Tasks</a>
+        </li>
+        <li><a href="/research">Research</a></li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+        <li><a href="/about">About</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <button onclick="scrollToTop()" id="topBtn">⬆</button>
+
+    <script>
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+
+    {% block content %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+    <footer class="la-footer">
+      <div class="la-footer-container">
+        <div class="la-footer-grid">
+          <!-- ABOUT -->
+          <div class="la-footer-col">
+            <h3>Learnalytics</h3>
+            <p>
+              Learnalytics is a student performance analytics platform that uses
+              data analysis and machine learning to understand the factors
+              affecting academic success. This project demonstrates real-world
+              data analytics techniques using Python, Flask and visualization
+              tools.
+            </p>
+          </div>
+
+          <!-- QUICK LINKS -->
+          <div class="la-footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/templates/">About</a></li>
+              <li>
+                <a href="/templates/analytics_overview.html">Analytics</a>
+              </li>
+              <li><a href="/templates/tasks_dashboard.html">Tasks</a></li>
+              <li><a href="/templates/">Research</a></li>
+            </ul>
+          </div>
+
+          <!-- ANALYTICS -->
+          <div class="la-footer-col">
+            <h4>Analytics Features</h4>
+            <ul>
+              <li><a href="/task1">Data Understanding</a></li>
+              <li><a href="/task7">Supervised Learning</a></li>
+              <li><a href="/task10">Classification Model</a></li>
+              <li><a href="/task11">Model Evaluation</a></li>
+              <li><a href="/task13">Advanced Visualization</a></li>
+            </ul>
+          </div>
+
+          <!-- CONTACT -->
+          <div class="la-footer-col">
+            <h4>Project Info</h4>
+
+            <p><strong>Project:</strong> Student Performance Analyzer</p>
+            <p><strong>Platform:</strong> Learnalytics</p>
+            <p><strong>Course:</strong> TYBCA Semester 6</p>
+            <p><strong>Technology:</strong> Python, Flask, Data Analytics</p>
+          </div>
+        </div>
+
+        <div class="la-footer-bottom">
+          <div class="la-footer-social">
+            <a href="#">🌐</a>
+            <a href="#">📊</a>
+            <a href="#">📚</a>
+            <a href="#">💻</a>
+          </div>
+
+          <p>© 2026 Learnalytics | Data Analytics Project</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

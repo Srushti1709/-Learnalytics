@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="analysis-result">
+  <h1 class="title">📊 Analysis Results</h1>
+
+  <div class="result-card">
+    <h2>Dataset Summary</h2>
+
+    <div class="table-box">{{ results.summary|safe }}</div>
+  </div>
+
+  {% if results.hist %}
+
+  <div class="result-card">
+    <h2>Data Distribution</h2>
+
+    <img
+      src="{{ url_for('static', filename='images/' + results.hist) }}"
+      class="graph"
+    />
+  </div>
+
+  {% endif %}
+
+  <div class="result-card">
+    <h2>Insights</h2>
+
+    <ul>
+      <li>Higher study hours generally improve exam performance.</li>
+
+      <li>Regular attendance strongly correlates with academic success.</li>
+
+      <li>Balanced sleep improves concentration.</li>
+
+      <li>Motivation and parental support influence performance.</li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

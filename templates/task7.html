@@ -1,0 +1,225 @@
+{% extends "base.html" %} {% block content %}
+
+<a href="/tasks" class="back-btn">⬅ Back to Tasks</a>
+
+<h2 style="color: #facc15">📊 Task 7 – Supervised Learning Models</h2>
+
+<div class="info-box">
+  <h3>📊 Model Training Overview</h3>
+
+  <div class="nx-summary-grid">
+    <div class="nx-summary-card">
+      <h2>80%</h2>
+      <p>Training Data</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>20%</h2>
+      <p>Testing Data</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>3</h2>
+      <p>Models Used</p>
+    </div>
+
+    <div class="nx-summary-card">
+      <h2>{{ log_accuracy }}</h2>
+      <p>Best Accuracy</p>
+    </div>
+  </div>
+</div>
+
+<section class="nx-dataset-section">
+  <h2>📘 Supervised Learning Explanation</h2>
+
+  <div class="nx-dataset-intro">
+    <p>
+      Supervised learning is a machine learning technique where the model is
+      trained using labeled data. The algorithm learns relationships between
+      input variables and output variables and then predicts results for new
+      data.
+    </p>
+  </div>
+
+  <h3>⚙️ Dataset Splitting</h3>
+
+  <div class="nx-highlight-grid">
+    <div class="nx-highlight-box">
+      <b>Training Dataset</b>
+      <p>
+        Used to train the machine learning model and help it learn patterns from
+        the dataset.
+      </p>
+    </div>
+
+    <div class="nx-highlight-box">
+      <b>Testing Dataset</b>
+      <p>
+        Used to evaluate how well the trained model performs on unseen data.
+      </p>
+    </div>
+  </div>
+
+  <h3>⚠️ Overfitting vs Underfitting</h3>
+
+  <div class="nx-highlight-grid">
+    <div class="nx-highlight-box">
+      <b>Overfitting</b>
+      <p>
+        The model memorizes the training data instead of learning patterns,
+        resulting in poor performance on new data.
+      </p>
+    </div>
+
+    <div class="nx-highlight-box">
+      <b>Underfitting</b>
+      <p>
+        The model is too simple and cannot capture the relationships between
+        input and output variables.
+      </p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 60px">📈 Simple Linear Regression Model</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      Simple Linear Regression predicts the target variable using a single
+      independent variable.
+    </p>
+
+    <p><b>Example:</b> Hours Studied → Exam Score</p>
+
+    <div class="nx-summary-grid">
+      <div class="nx-summary-card">
+        <h2>{{ simple_r2 }}</h2>
+        <p>R² Score</p>
+      </div>
+
+      <div class="nx-summary-card">
+        <h2>{{ simple_mse }}</h2>
+        <p>Mean Squared Error</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 60px">📊 Multiple Linear Regression Model</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      Multiple Linear Regression uses multiple independent variables to predict
+      the target variable.
+    </p>
+
+    <p>Factors affecting student performance:</p>
+
+    <div class="nx-column-grid">
+      <div class="nx-column-box">Hours Studied</div>
+      <div class="nx-column-box">Attendance</div>
+      <div class="nx-column-box">Previous Scores</div>
+      <div class="nx-column-box">Sleep Hours</div>
+      <div class="nx-column-box">Motivation Level</div>
+    </div>
+
+    <div class="nx-summary-grid">
+      <div class="nx-summary-card">
+        <h2>{{ multi_r2 }}</h2>
+        <p>R² Score</p>
+      </div>
+
+      <div class="nx-summary-card">
+        <h2>{{ multi_mse }}</h2>
+        <p>Mean Squared Error</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 60px">🤖 Logistic Regression Model</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      Logistic regression is used for classification problems where the output
+      variable is categorical.
+    </p>
+
+    <p>
+      In this project the student performance is converted into two classes:
+    </p>
+
+    <div class="nx-highlight-grid">
+      <div class="nx-highlight-box">Above Average Performance</div>
+      <div class="nx-highlight-box">Below Average Performance</div>
+    </div>
+
+    <div class="nx-summary-grid">
+      <div class="nx-summary-card">
+        <h2>{{ log_accuracy }}</h2>
+        <p>Model Accuracy</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 60px">📉 Confusion Matrix</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      Confusion matrix helps evaluate classification performance by comparing
+      actual values with predicted values.
+    </p>
+
+    <img
+      src="{{ url_for('static', filename='task7_confusion.png') }}"
+      width="450"
+    />
+  </div>
+
+  <h3 style="margin-top: 60px">📈 Regression Visualization</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      The regression plot shows the relationship between the selected feature
+      and the predicted target variable.
+    </p>
+
+    <img
+      src="{{ url_for('static', filename='task7_regression.png') }}"
+      width="450"
+    />
+  </div>
+
+  <h3 style="margin-top: 60px">⭐ Feature Importance Analysis</h3>
+
+  <div class="nx-stats-box">
+    <p>
+      Feature importance shows which variables influence student performance the
+      most.
+    </p>
+
+    <img
+      src="{{ url_for('static', filename='task7_features.png') }}"
+      width="500"
+    />
+  </div>
+
+  <h3 style="margin-top: 60px">📌 Conclusion</h3>
+
+  <div class="nx-dataset-intro">
+    <p>
+      The supervised learning models helped analyze student performance patterns
+      using historical data.
+    </p>
+
+    <p>
+      Multiple Linear Regression performed better because it considers multiple
+      influencing factors simultaneously.
+    </p>
+
+    <p>
+      Logistic Regression was useful in classifying student performance into
+      categories such as above average and below average.
+    </p>
+  </div>
+</section>
+
+{% endblock %}

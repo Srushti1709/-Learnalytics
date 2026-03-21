@@ -1,0 +1,300 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="dashboard1">
+  <aside class="sidebar1">
+    <h2>Learnalytics</h2>
+
+    <ul>
+      <li data-section="overview" class="active">📊 Overview</li>
+      <li data-section="trends">📈 Performance Trends</li>
+      <li data-section="impact">🧠 Factor Impact</li>
+      <li data-section="history">📂 Prediction History</li>
+    </ul>
+  </aside>
+
+  <div class="main-content1">
+    <!-- OVERVIEW -->
+    <div id="overview" class="dash-section1">
+      <h1>Academic Overview</h1>
+
+      <div class="card-grid1">
+        <div class="card1">
+          <h3>{{ avg_marks }}%</h3>
+          <p>Current Performance</p>
+        </div>
+
+        <div class="card1">
+          <h3>{{ total_predictions }}</h3>
+          <p>Total Predictions</p>
+        </div>
+
+        <div class="card1">
+          <h3>{{ avg_attendance }}%</h3>
+          <p>Average Attendance</p>
+        </div>
+
+        <div class="card1">
+          <h3>
+            {% if avg_marks >= 75 %} Low {% elif avg_marks >= 50 %} Medium {%
+            else %} High {% endif %}
+          </h3>
+          <p>Risk Level</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRENDS -->
+    <div id="trends" class="dash-section1" style="display: none">
+      <h1>Performance Trends</h1>
+      <canvas id="trendChart"></canvas>
+    </div>
+
+    <!-- IMPACT -->
+    <div id="impact" class="dash-section1" style="display: none">
+      <h1>Factor Impact</h1>
+      <canvas id="factorChart"></canvas>
+    </div>
+
+    <!-- HISTORY -->
+    <!-- HISTORY -->
+    <div class="dash-section1" style="display: none" id="prediction-history">
+      <h2 class="section-title">📊 Prediction History</h2>
+
+      {% if history %}
+      <div class="history-container">
+
+        {% for row in history %}
+        <div class="history-card"
+          onclick="showDetails('{{ row[0] }}','{{ row[1] }}','{{ row[2] }}','{{ row[3] }}','{{ row[4] }}')">
+
+          <!-- LEFT -->
+          <div class="card-left">
+            <h4>Attempt #{{ loop.index }}</h4>
+
+            <p class="status">
+              {% if row[4] >= 75 %}
+              Excellent Performance
+              {% elif row[4] >= 50 %}
+              Average Performance
+              {% else %}
+              Needs Improvement
+              {% endif %}
+            </p>
+
+            <!-- Progress -->
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="{{ row[4] }}"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="card-right 
+            {% if row[4] >= 75 %}high
+            {% elif row[4] >= 50 %}medium
+            {% else %}low
+            {% endif %}">
+            {{ row[4] }}%
+          </div>
+
+        </div>
+        {% endfor %}
+
+      </div>
+      {% else %}
+      <p class="no-data">No prediction history found</p>
+      {% endif %}
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <div id="resultModal" class="result-modal">
+      <div class="result-content">
+        <span class="close-btn" onclick="closeModal()" style="font-size: 50px;">×</span>
+
+        <h3>📈 Prediction Details</h3>
+
+        <p style="margin-top: 20px;"><strong>Study:</strong> <span id="r_study"></span></p>
+        <p><strong>Attendance:</strong> <span id="r_attendance"></span></p>
+        <p><strong>Sleep:</strong> <span id="r_sleep"></span></p>
+        <p><strong>Stress:</strong> <span id="r_stress"></span></p>
+
+        <h4>
+          Predicted Score:
+          <span id="r_score"></span>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 🔥 DATA PASS -->
+<script id="dash-data" type="application/json">
+    {
+      "trend_labels": {{ trend_labels | tojson }},
+      "trend_scores": {{ trend_scores | tojson }},
+      "factor_data": {{ factor_data | tojson }}
+    }
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const data = JSON.parse(document.getElementById("dash-data").textContent);
+
+  let trendChart = null;
+  let factorChart = null;
+
+  // 🔥 NAVIGATION FIX
+  document.querySelectorAll(".sidebar1 li").forEach((item) => {
+    item.addEventListener("click", function () {
+      const sectionId = this.dataset.section;
+
+      document.querySelectorAll(".dash-section1").forEach((sec) => {
+        sec.style.display = "none";
+      });
+
+      document.getElementById(sectionId).style.display = "block";
+
+      document
+        .querySelectorAll(".sidebar1 li")
+        .forEach((i) => i.classList.remove("active"));
+      this.classList.add("active");
+
+      // 🔥 CREATE CHART WHEN CLICK
+      if (sectionId === "trends" && !trendChart) {
+        const ctx = document.getElementById("trendChart");
+        trendChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.trend_labels,
+            datasets: [
+              {
+                label: "Performance Trend",
+                data: data.trend_scores,
+                borderColor: "#7C3AED",
+                backgroundColor: "rgba(124,58,237,0.2)",
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+        });
+      }
+
+      if (sectionId === "impact" && !factorChart) {
+        const ctx2 = document.getElementById("factorChart");
+        factorChart = new Chart(ctx2, {
+          type: "bar",
+          data: {
+            labels: ["Study", "Attendance", "Sleep", "Stress"],
+            datasets: [
+              {
+                label: "Factor Impact",
+                data: data.factor_data,
+                backgroundColor: ["#7C3AED", "#FFD60A", "#7C3AED", "#FFD60A"],
+              },
+            ],
+          },
+        });
+      }
+    });
+  });
+
+  // DEFAULT
+  document.getElementById("overview").style.display = "block";
+
+  // MODAL
+  function showDetails(study, attendance, sleep, stress, score) {
+    document.getElementById("r_study").innerText = study;
+    document.getElementById("r_attendance").innerText = attendance;
+    document.getElementById("r_sleep").innerText = sleep;
+    document.getElementById("r_stress").innerText = stress;
+    document.getElementById("r_score").innerText = score + "%";
+
+    const modal = document.getElementById("resultModal");
+    modal.style.display = "flex";
+
+    // trigger animation
+    setTimeout(() => {
+      modal.classList.add("active");
+    }, 10);
+  }
+
+  function closeModal() {
+    const modal = document.getElementById("resultModal");
+
+    modal.classList.remove("active");
+
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 300);
+  }
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".progress-fill").forEach(function (el) {
+      el.style.width = el.getAttribute("data-width") + "%";
+    });
+  });
+
+  window.addEventListener("DOMContentLoaded", function () {
+    const hash = window.location.hash;
+
+    if (hash) {
+      // Hide all dashboard sections
+      document.querySelectorAll(".dash-section1").forEach((section) => {
+        section.style.display = "none";
+      });
+
+      const target = document.querySelector(hash);
+      if (target) {
+        target.style.display = "block";
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  });
+
+
+  function showDashSection(sectionId) {
+    const sections = document.querySelectorAll(".dash-section1");
+    sections.forEach((section) => {
+      section.style.display = "none";
+    });
+
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.style.display = "block";
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      // fallback: if target not found, show first section
+      if (sections.length > 0) {
+        sections[0].style.display = "block";
+      }
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", function () {
+    const hash = window.location.hash.replace("#", "");
+
+    if (hash) {
+      showDashSection(hash);
+    } else {
+      // default dashboard section
+      showDashSection("overview");
+    }
+  });
+
+
+
+</script>
+
+{% endblock %}
+</div>

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="predict-container">
+
+<h1 class="predict-title">🎯 Student Performance Prediction Model</h1>
+
+<p class="predict-intro">
+This module uses machine learning to predict student exam performance 
+based on study habits, attendance, sleep patterns and motivation level.
+The system analyzes these factors and predicts the expected exam score.
+</p>
+
+
+<!-- MODEL THEORY -->
+
+<div class="predict-section">
+
+<h2>📚 Model Description</h2>
+
+<p>
+The prediction model is built using regression techniques from
+machine learning. The algorithm studies the relationship between
+multiple factors affecting academic performance such as study hours,
+attendance, sleep hours, previous scores and motivation level.
+</p>
+
+<p>
+By analyzing these variables, the system predicts the student's
+expected exam score and performance category.
+</p>
+
+</div>
+
+
+<!-- FEATURES -->
+
+<div class="predict-section">
+
+<h2>⚙ Factors Used In Prediction</h2>
+
+<ul class="feature-list">
+
+<li>Study Hours</li>
+<li>Attendance Percentage</li>
+<li>Sleep Hours</li>
+<li>Previous Academic Scores</li>
+<li>Motivation Level</li>
+<li>Internet Access</li>
+<li>Extracurricular Activities</li>
+
+</ul>
+
+</div>
+
+
+<!-- PREDICTION FORM -->
+
+<div class="predict-form-box">
+
+<h2>📊 Predict Student Performance</h2>
+
+<form action="/predict_model" method="POST">
+
+<div class="predict-grid">
+
+<input type="number" name="study" placeholder="Study Hours" required>
+
+<input type="number" name="attendance" placeholder="Attendance %" required>
+
+<input type="number" name="sleep" placeholder="Sleep Hours" required>
+
+<input type="number" name="previous" placeholder="Previous Scores" required>
+
+<select name="motivation">
+
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+
+</select>
+
+<select name="internet">
+
+<option>Yes</option>
+<option>No</option>
+
+</select>
+
+<select name="activity">
+
+<option>Yes</option>
+<option>No</option>
+
+</select>
+
+</div>
+
+<button class="predict-btn">Predict Score</button>
+
+</form>
+
+</div>
+
+
+<!-- RESULT -->
+
+{% if prediction %}
+
+<div class="result-card">
+
+<h2>📈 Prediction Result</h2>
+
+<h3 class="score">{{ prediction }} %</h3>
+
+<p class="category">{{ category }}</p>
+
+</div>
+
+{% endif %}
+
+
+<!-- THEORY / INSIGHTS -->
+
+<div class="predict-section">
+
+<h2>🔍 Insights</h2>
+
+<p>
+Higher study hours and attendance significantly improve academic
+performance. Balanced sleep improves concentration while motivation
+and participation in extracurricular activities help develop better
+learning outcomes.
+</p>
+
+</div>
+
+</div>
+
+{% endblock %}
