@@ -35,11 +35,10 @@ print(df.columns)
 print("Dataset Loaded Successfully")
 print("Shape:", df.shape)
 
-
-DATABASE = "database.db"
-UPLOAD_FOLDER = "static/uploads"
-
-GRAPH_FOLDER = "static/graphs"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database.db")
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
+GRAPH_FOLDER = os.path.join(BASE_DIR, "static", "graphs")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(GRAPH_FOLDER, exist_ok=True)
@@ -116,6 +115,7 @@ def ensure_image_column():
     conn.commit()
     conn.close()
 
+
 ensure_image_column()
 
 
@@ -135,7 +135,7 @@ def home():
     import sqlite3
     import pandas as pd
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     # Total users
@@ -223,8 +223,11 @@ def register():
 
         if image_file and image_file.filename != "":
             filename = secure_filename(image_file.filename)
-            image_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            image_file.save(image_path)
+            try:
+                image_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                image_file.save(image_path)
+            except Exception:
+                filename = None
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -253,7 +256,6 @@ def register():
         return redirect("/login")
 
     return render_template("register.html")
-
 
 
 # ---------------- LOGIN ----------------
@@ -302,7 +304,7 @@ def dashboard():
 
     import sqlite3
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute(
@@ -392,7 +394,7 @@ def add_data():
         else:
             category = "Poor"
 
-        conn = sqlite3.connect("database.db")
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute(
@@ -426,7 +428,7 @@ def history():
     if "user_id" not in session:
         return redirect("/login")
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute(
@@ -567,25 +569,25 @@ def profile():
     )
 
 
-UPLOAD_FOLDER = os.path.join("static", "uploads")
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# UPLOAD_FOLDER = os.path.join("static", "uploads")
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@app.route('/update_profile', methods=['POST'])
+@app.route("/update_profile", methods=["POST"])
 def update_profile():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
-    user_id = session['user_id']
-    full_name = request.form.get('full_name', '').strip()
-    email = request.form.get('email', '').strip()
-    age = request.form.get('age', '').strip()
-    course = request.form.get('course', '').strip()
+    user_id = session["user_id"]
+    full_name = request.form.get("full_name", "").strip()
+    email = request.form.get("email", "").strip()
+    age = request.form.get("age", "").strip()
+    course = request.form.get("course", "").strip()
 
     # IMPORTANT: same name use in edit form
     image_file = request.files.get("profile_image")
 
-    conn = get_db_connection()   # IMPORTANT: database.db use karo
+    conn = get_db_connection()  # IMPORTANT: database.db use karo
     cursor = conn.cursor()
 
     # Pehle current user ka image fetch karo
@@ -597,23 +599,29 @@ def update_profile():
 
     # Agar new image upload hui hai to save karo
     if image_file and image_file.filename != "":
-        new_filename = secure_filename(image_file.filename)
-        image_path = os.path.join(app.config["UPLOAD_FOLDER"], new_filename)
-        image_file.save(image_path)
+        temp_filename = secure_filename(image_file.filename)
+        try:
+            image_path = os.path.join(app.config["UPLOAD_FOLDER"], temp_filename)
+            image_file.save(image_path)
+            new_filename = temp_filename
+        except Exception:
+            pass
 
     # Update all profile fields + image
-    cursor.execute("""
+    cursor.execute(
+        """
         UPDATE users
         SET full_name = ?, email = ?, age = ?, course = ?, image = ?
         WHERE id = ?
-    """, (full_name, email, age, course, new_filename, user_id))
+    """,
+        (full_name, email, age, course, new_filename, user_id),
+    )
 
     conn.commit()
     conn.close()
 
     flash("Profile updated successfully!", "success")
-    return redirect(url_for('profile'))
-
+    return redirect(url_for("profile"))
 
 
 # ================= PROFILE DASHBOARD =================
