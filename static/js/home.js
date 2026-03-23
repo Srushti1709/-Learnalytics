@@ -1,90 +1,123 @@
+ // MOBILE MENU
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.querySelector(".nav-menu");
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+}
+
 // HERO CHART
-const heroCtx = document.getElementById("heroChart");
+const heroCanvas = document.getElementById("heroChart");
 
-new Chart(heroCtx, {
-  type: "line",
-  data: {
-    labels: ["Study", "Attendance", "Sleep", "Stress", "Previous"],
-    datasets: [
-      {
-        label: "Impact",
-        data: [30, 25, 15, -20, 28],
-        borderColor: "#7C3AED",
-        backgroundColor: "rgba(124,58,237,0.2)",
-        fill: true,
-        tension: 0.4,
+if (heroCanvas) {
+  const heroChart = new Chart(heroCanvas, {
+    type: "line",
+    data: {
+      labels: ["Study", "Attendance", "Sleep", "Stress", "Previous"],
+      datasets: [
+        {
+          label: "Impact",
+          data: [30, 25, 15, 20, 28],
+          borderColor: "#7C3AED",
+          backgroundColor: "rgba(124,58,237,0.2)",
+          fill: true,
+          tension: 0.45,
+          pointRadius: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      animation: {
+        duration: 1800,
+        easing: "easeInOutSine"
+      }
+    },
+  });
+
+  setInterval(() => {
+    heroChart.data.datasets[0].data = [
+      26 + Math.random() * 8,
+      22 + Math.random() * 8,
+      12 + Math.random() * 6,
+      15 + Math.random() * 10,
+      24 + Math.random() * 8
+    ];
+    heroChart.update();
+  }, 2200);
+}
+
+
+// ANALYSIS CHART
+let analysisChart = null;
+const chartDataElement = document.getElementById("chart-data");
+const analysisCanvas = document.getElementById("analysisChart");
+
+if (chartDataElement && analysisCanvas) {
+  const chartData = JSON.parse(chartDataElement.textContent);
+
+  const hours = chartData.hours || [];
+  const scores = chartData.scores || [];
+
+  const limitedHours = hours.slice(-10);
+  const limitedScores = scores.slice(-10);
+
+  analysisChart = new Chart(analysisCanvas, {
+    type: "line",
+    data: {
+      labels: limitedHours,
+      datasets: [
+        {
+          label: "Performance Score",
+          data: limitedScores,
+          borderColor: "#7C3AED",
+          backgroundColor: "rgba(124,58,237,0.2)",
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: "#FFD60A",
+          pointRadius: 5,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff",
+          },
+        },
       },
-    ],
-  },
-  options: {
-    responsive: true,
-  },
-});
-
-// BAR CHART
-
-// ✅ GET DATA FROM HTML (NO ERROR)
-const chartData = JSON.parse(document.getElementById("chart-data").textContent);
-
-const hours = chartData.hours;
-const scores = chartData.scores;
-
-// 🔥 LIMIT DATA (last 10 records only)
-const limitedHours = hours.slice(-10);
-const limitedScores = scores.slice(-10);
-
-// BAR CHART
-
-const analysisCtx = document.getElementById("analysisChart");
-
-const analysisChart = new Chart(analysisCtx, {
-  type: "line", // 🔥 line chart looks better
-  data: {
-    labels: limitedHours,
-    datasets: [
-      {
-        label: "Performance Score",
-        data: limitedScores,
-        borderColor: "#7C3AED",
-        backgroundColor: "rgba(124,58,237,0.2)",
-        fill: true,
-        tension: 0.4, // smooth curve 🔥
-        pointBackgroundColor: "#FFD60A",
-        pointRadius: 5,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        labels: {
-          color: "#fff",
+      scales: {
+        x: {
+          ticks: { color: "#fff" },
+        },
+        y: {
+          ticks: { color: "#fff" },
         },
       },
     },
-    scales: {
-      x: {
-        ticks: { color: "#fff" },
-      },
-      y: {
-        ticks: { color: "#fff" },
-      },
-    },
-  },
-});
+  });
+}
 
 // SCROLL REVEAL
-const reveals = document.querySelectorAll(".section");
+const reveals = document.querySelectorAll(".reveal");
 
-window.addEventListener("scroll", () => {
+function revealOnScroll() {
   reveals.forEach((section) => {
     const top = section.getBoundingClientRect().top;
     if (top < window.innerHeight - 100) {
       section.classList.add("active");
     }
   });
-});
+}
+
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();
 
 // COUNTER ANIMATION
 const counters = document.querySelectorAll(".counter");
@@ -93,10 +126,10 @@ counters.forEach((counter) => {
   const updateCounter = () => {
     const target = +counter.getAttribute("data-target");
     const count = +counter.innerText;
-    const increment = target / 100;
+    const increment = Math.max(1, Math.ceil(target / 100));
 
     if (count < target) {
-      counter.innerText = Math.ceil(count + increment);
+      counter.innerText = Math.min(count + increment, target);
       setTimeout(updateCounter, 20);
     } else {
       counter.innerText = target;
@@ -106,56 +139,71 @@ counters.forEach((counter) => {
   updateCounter();
 });
 
+// OPTIONAL PREDICT FUNCTION
 function predictScore() {
+  const studyInput = document.getElementById("study");
+  const attendanceInput = document.getElementById("attendance");
+  const sleepInput = document.getElementById("sleep");
+  const stressInput = document.getElementById("stress");
+  const resultBox = document.getElementById("result");
 
-    const study = document.getElementById('study').value;
-    const attendance = document.getElementById('attendance').value;
-    const sleep = document.getElementById('sleep').value;
-    const stress = document.getElementById('stress').value;
+  if (!studyInput || !attendanceInput || !sleepInput || !stressInput) return;
 
-    fetch("/predict", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            study: study,
-            attendance: attendance,
-            sleep: sleep,
-            stress: stress
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
+  const study = studyInput.value;
+  const attendance = attendanceInput.value;
+  const sleep = sleepInput.value;
+  const stress = stressInput.value;
 
-        document.getElementById('result').innerText =
-            "Estimated Performance Score: " + data.score + "%";
+  fetch("/predict", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      study: study,
+      attendance: attendance,
+      sleep: sleep,
+      stress: stress,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (resultBox) {
+        resultBox.innerText = "Estimated Performance Score: " + data.score + "%";
+      }
 
+      if (analysisChart) {
         analysisChart.data.datasets[0].data = [
-            study * 2,
-            attendance * 0.3,
-            sleep * 1.5,
-            -stress * 2,
-            data.score
+          study * 2,
+          attendance * 0.3,
+          sleep * 1.5,
+          -stress * 2,
+          data.score,
         ];
-
         analysisChart.update();
+      }
+    })
+    .catch((error) => {
+      console.error("Prediction error:", error);
     });
 }
 
+// HERO PARALLAX
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
   const hero = document.querySelector(".hero");
 
-  hero.style.transform = `translateY(${scrollY * 0.2}px)`;
+  if (hero && window.innerWidth > 768) {
+    hero.style.transform = `translateY(${scrollY * 0.08}px)`;
+  }
 });
 
 // DASHBOARD CHARTS
+const trendCanvas = document.getElementById("trendChart");
+const factorCanvas = document.getElementById("factorChart");
 
-if (document.getElementById("trendChart")) {
-  const trendCtx = document.getElementById("trendChart");
-
-  new Chart(trendCtx, {
+if (trendCanvas) {
+  new Chart(trendCanvas, {
     type: "line",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May"],
@@ -170,11 +218,15 @@ if (document.getElementById("trendChart")) {
         },
       ],
     },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+    },
   });
+}
 
-  const factorCtx = document.getElementById("factorChart");
-
-  new Chart(factorCtx, {
+if (factorCanvas) {
+  new Chart(factorCanvas, {
     type: "doughnut",
     data: {
       labels: ["Study", "Attendance", "Sleep", "Stress"],
@@ -185,17 +237,31 @@ if (document.getElementById("trendChart")) {
         },
       ],
     },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+    },
   });
 }
 
-function showSection(sectionId) {
+// DASHBOARD SECTION SWITCH
+function showSection(sectionId, element) {
   const sections = document.querySelectorAll(".dash-section");
-  sections.forEach((sec) => sec.classList.add("hidden"));
+  sections.forEach((sec) => {
+    sec.classList.add("hidden");
+    sec.style.display = "none";
+  });
 
-  document.getElementById(sectionId).classList.remove("hidden");
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.classList.remove("hidden");
+    target.style.display = "block";
+  }
 
   const items = document.querySelectorAll(".sidebar li");
   items.forEach((item) => item.classList.remove("active"));
 
-  event.target.classList.add("active");
+  if (element) {
+    element.classList.add("active");
+  }
 }

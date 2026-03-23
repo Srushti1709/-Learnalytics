@@ -27,13 +27,29 @@ model = joblib.load("model.pkl")
 predictions = []
 
 
-app = Flask(__name__)
-app.secret_key = "supersecretkey"
-# app.secret_key = "secret123"
+# app = Flask(__name__)
+# app.secret_key = "supersecretkey"
+# # app.secret_key = "secret123"
 
 print(df.columns)
 print("Dataset Loaded Successfully")
 print("Shape:", df.shape)
+
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# DATABASE = os.path.join(BASE_DIR, "database.db")
+# UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
+# GRAPH_FOLDER = os.path.join(BASE_DIR, "static", "graphs")
+
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# os.makedirs(GRAPH_FOLDER, exist_ok=True)
+
+
+# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, "database.db")
@@ -43,7 +59,6 @@ GRAPH_FOLDER = os.path.join(BASE_DIR, "static", "graphs")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(GRAPH_FOLDER, exist_ok=True)
 
-
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 if not os.path.exists(UPLOAD_FOLDER):
@@ -52,7 +67,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 # ---------------- DATABASE CONNECTION ----------------
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(DATABASE, timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -209,7 +224,6 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-
         username = request.form["username"].strip()
         password = request.form["password"].strip()
         full_name = request.form["full_name"].strip()
@@ -217,7 +231,6 @@ def register():
         age = request.form["age"].strip()
         course = request.form["course"].strip()
 
-        # IMPORTANT: register.html me input name = profile_image
         image_file = request.files.get("profile_image")
         filename = None
 
@@ -226,65 +239,80 @@ def register():
             try:
                 image_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                 image_file.save(image_path)
-            except Exception:
+            except Exception as e:
+                print("Image upload error:", e)
                 filename = None
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
 
-        # CHECK EXISTING USER
-        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
-        existing = cursor.fetchone()
+            cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+            existing = cursor.fetchone()
 
-        if existing:
+            if existing:
+                conn.close()
+                flash("Username already exists", "danger")
+                return redirect("/register")
+
+            cursor.execute(
+                """
+                INSERT INTO users (username, password, full_name, email, age, course, image)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (username, password, full_name, email, age, course, filename),
+            )
+
+            conn.commit()
             conn.close()
-            flash("Username already exists", "danger")
+
+            flash("Registration Successful. Please login.", "success")
+            return redirect("/login")
+
+        except Exception as e:
+            print("Register error:", e)
+            flash("Registration failed. Please try again.", "danger")
             return redirect("/register")
 
-        cursor.execute(
-            """
-            INSERT INTO users (username, password, full_name, email, age, course, image)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (username, password, full_name, email, age, course, filename),
-        )
-
-        conn.commit()
-        conn.close()
-
-        flash("Registration Successful. Please login.", "success")
-        return redirect("/login")
-
     return render_template("register.html")
+
 
 
 # ---------------- LOGIN ----------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-
         username = request.form["username"].strip()
         password = request.form["password"].strip()
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM users WHERE username=? AND password=?",
-            (username, password),
-        )
+            cursor.execute(
+                "SELECT * FROM users WHERE username=? AND password=?",
+                (username, password),
+            )
 
-        user = cursor.fetchone()
-        conn.close()
+            user = cursor.fetchone()
+            conn.close()
 
-        if user:
-            session["user_id"] = user["id"]
-            return redirect("/analytics_overview")  # ✅ ONLY CHANGE
-        else:
-            flash("Invalid Credentials")
+            if user:
+                session["user_id"] = user["id"]
+                flash("Login successful", "success")
+                return redirect("/analytics_overview")
+            else:
+                flash("Invalid Credentials", "danger")
+                return redirect("/login")
+
+        except Exception as e:
+            print("Login error:", e)
+            flash("Login failed. Please try again.", "danger")
             return redirect("/login")
 
     return render_template("login.html")
+
+
 
     # ---------------- DASHBOARD ----------------
 

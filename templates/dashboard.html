@@ -8,7 +8,7 @@
       <li data-section="overview" class="active">📊 Overview</li>
       <li data-section="trends">📈 Performance Trends</li>
       <li data-section="impact">🧠 Factor Impact</li>
-      <li data-section="history">📂 Prediction History</li>
+      <li data-section="prediction-history">📂 Prediction History</li>
     </ul>
   </aside>
 
@@ -57,7 +57,7 @@
 
     <!-- HISTORY -->
     <!-- HISTORY -->
-    <div class="dash-section1" style="display: none" id="prediction-history">
+    <div class="dash-section1 hidden" id="prediction-history">
       <h2 class="section-title">📊 Prediction History</h2>
 
       {% if history %}
@@ -173,6 +173,29 @@
         const ctx = document.getElementById("trendChart");
         trendChart = new Chart(ctx, {
           type: "line",
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "#111"
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#111"
+                }
+              },
+              y: {
+                ticks: {
+                  color: "#111"
+                }
+              }
+            }
+          },
           data: {
             labels: data.trend_labels,
             datasets: [
@@ -193,6 +216,30 @@
         const ctx2 = document.getElementById("factorChart");
         factorChart = new Chart(ctx2, {
           type: "bar",
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "#111"
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#111"
+                }
+              },
+              y: {
+                ticks: {
+                  color: "#111"
+                },
+                beginAtZero: true
+              }
+            }
+          },
           data: {
             labels: ["Study", "Attendance", "Sleep", "Stress"],
             datasets: [
@@ -297,4 +344,3 @@
 </script>
 
 {% endblock %}
-</div>

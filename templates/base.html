@@ -108,6 +108,48 @@
       .navbar li:hover > .dropdown-menu {
         display: block;
       }
+
+      .flash-container {
+        width: 90%;
+        max-width: 900px;
+        margin: 20px auto 10px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 9999;
+        position: relative;
+      }
+
+      .flash-message {
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .flash-message.success {
+        background: #d1fae5;
+        color: #065f46;
+        border-left: 5px solid #10b981;
+      }
+
+      .flash-message.danger {
+        background: #fee2e2;
+        color: #991b1b;
+        border-left: 5px solid #ef4444;
+      }
+
+      .flash-message.warning {
+        background: #fef3c7;
+        color: #92400e;
+        border-left: 5px solid #f59e0b;
+      }
+
+      .flash-message.info {
+        background: #dbeafe;
+        color: #1e3a8a;
+        border-left: 5px solid #3b82f6;
+      }
     </style>
   </head>
   <body>
@@ -157,6 +199,9 @@
         </a>
       </div>
 
+
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      
       <ul class="nav-menu">
         <li><a href="{{ url_for('home') }}">Home</a></li>
 
@@ -226,6 +271,15 @@
         {% endif %}
       </ul>
     </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+      <div class="flash-message {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
 
     <button onclick="scrollToTop()" id="topBtn">⬆</button>
 
